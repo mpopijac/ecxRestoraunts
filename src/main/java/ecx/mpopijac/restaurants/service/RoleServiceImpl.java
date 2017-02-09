@@ -16,8 +16,8 @@ public class RoleServiceImpl implements RoleService {
 	RoleRepository roleRepository;
 	
 	@Transactional
-	public Role save(Role article) {
-		return roleRepository.save(article);
+	public Role save(Role role) {
+		return roleRepository.save(role);
 	}
 
 	@Transactional
@@ -33,6 +33,16 @@ public class RoleServiceImpl implements RoleService {
 	@Transactional
 	public Role findByName(String name) {
 		return roleRepository.findByName(name);
+	}
+
+	@Transactional
+	public void update(Role role) {
+		roleRepository.update(role);
+	}
+
+	@Transactional
+	public void delete(Role role) {
+		roleRepository.delete(role);
 	}
 
 }

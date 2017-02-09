@@ -6,8 +6,10 @@ import ecx.mpopijac.restaurants.models.Role;
 
 
 public interface RoleService {
-	Role save(Role article);
+	Role save(Role role);
 	List<Role> findAll();
 	Role findById(int id);
 	Role findByName(String name);
+	void update(Role role);
+	void delete(Role role);
 }

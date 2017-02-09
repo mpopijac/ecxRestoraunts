@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head"></head>
+
+<body>
+	<nav th:replace="template :: nav"></nav>
+	<div class="container">
+		<div class="row">
+			<h1>List of roles</h1>
+			<div class="list-group">
+				<a th:each="role: ${roles}" href="" class="list-group-item">
+				<div class="row">
+					<h4 th:text="${role.name}" class="list-group-item-heading" style="float:left; margin-left: 1%;" >Role name</h4>
+					<form method="post" style="float: right; margin-right: 1%;" action="crud-role">
+						<input th:value="${role.id}" type="hidden" name="id"/>
+						<input type="hidden" name="operation" value="DELETE"/>
+						<button type="submit" class="btn btn-default">Delete</button>
+					</form>
+					<form method="get" action="u-role" style="float: right; margin-right: 1%;">
+						<input th:value="${role.id}" type="hidden" name="id"/>
+						<button type="submit" class="btn btn-default">Update</button>
+					</form>
+				</div>
+				</a>
+			</div>
+			<a href="c-role" type="button" class="btn btn-default">Create</a>
+		</div>
+	</div>
+
+
+	<div th:replace="template :: footer"></div>
+</body>
+</html>
