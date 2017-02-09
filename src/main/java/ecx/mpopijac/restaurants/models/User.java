@@ -22,25 +22,30 @@ public class User {
 	private String firstName;
 	@Column(name="lastName")
 	private String lastName;
-	@Column(name="userName")
-	private String userName;
+	@Column(name="username", unique=true)
+	private String username;
 	
 	@NotNull
 	@Column(name="email", unique=true)
 	private String email;
+	
+	@NotNull
+	@Column(name="password")
+	private String password;
 	
 	@ManyToOne
 	private Role role;
 	
 	public User(){}
 
-	public User(int id, String firstName, String lastName, String userName, String email, Role role) {
+	public User(int id, String firstName, String lastName, String username, String email, String password, Role role) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.userName = userName;
+		this.username = username;
 		this.email = email;
+		this.password = password;
 		this.role = role;
 	}
 
@@ -68,12 +73,12 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {
@@ -82,6 +87,14 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Role getRole() {

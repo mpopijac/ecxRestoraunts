@@ -1,7 +1,8 @@
 package ecx.mpopijac.restaurants.models;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,12 +33,12 @@ public class Article {
 	@ManyToOne
 	private User author;
 	@OneToMany(mappedBy = "article")
-	private Set<Comment> comments = new HashSet<Comment>();
+	private List<Comment> comments = new ArrayList<Comment>();
 	
 	public Article(){}
 	
 	public Article(int id, String headline, String imageLocation, String description, Restaurant restaurant, User author,
-			Set<Comment> comments) {
+			ArrayList<Comment> comments) {
 		super();
 		this.id = id;
 		this.headline = headline;
@@ -85,11 +86,11 @@ public class Article {
 		this.author = author;
 	}
 
-	public Set<Comment> getComments() {
+	public List<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(Set<Comment> comments) {
+	public void setComments(ArrayList<Comment> comments) {
 		this.comments = comments;
 	}
 	
