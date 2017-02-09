@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head"></head>
+
+<body>
+	<nav th:replace="template :: nav"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="list-group">
+				<a th:each="article: ${articles}" href="" class="list-group-item">
+					<h4 th:text="${article.headline}" class="list-group-item-heading">Headline</h4>
+    				<p th:text="${restaurant.description}" class="list-group-item-text">Description </p>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="template :: footer"></div>
+</body>
+</html>
