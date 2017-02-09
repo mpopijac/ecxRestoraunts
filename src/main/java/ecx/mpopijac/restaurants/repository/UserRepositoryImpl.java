@@ -5,8 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
 import ecx.mpopijac.restaurants.models.User;
 
+@Repository("userRepository")
 public class UserRepositoryImpl implements UserRepository {
 	
 	@PersistenceContext

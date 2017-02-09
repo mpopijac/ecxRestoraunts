@@ -3,12 +3,14 @@ package ecx.mpopijac.restaurants.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.Comment;
 import ecx.mpopijac.restaurants.models.User;
 import ecx.mpopijac.restaurants.repository.CommentRepository;
 
+@Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
 	@Autowired

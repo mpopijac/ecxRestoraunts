@@ -3,11 +3,13 @@ package ecx.mpopijac.restaurants.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.Article;
 import ecx.mpopijac.restaurants.repository.ArticleRepository;
 
+@Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
 
 	@Autowired
