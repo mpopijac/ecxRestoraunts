@@ -12,4 +12,6 @@ public interface UserRepository {
 	User findByEmail(String email);
 	User findByUsernameAndPassword(String username, String password);
 	User findByEmailAndPassword(String email, String password);
+	void update(User user);
+	void delete(User user);
 }

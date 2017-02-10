@@ -50,4 +50,14 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findByEmailAndPassword(email, password);
 	}
 
+	@Transactional
+	public void update(User user) {
+		userRepository.update(user);
+	}
+
+	@Transactional
+	public void delete(User user) {
+		userRepository.delete(user);		
+	}
+
 }

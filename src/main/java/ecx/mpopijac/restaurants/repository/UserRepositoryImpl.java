@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -49,6 +50,24 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User findByEmailAndPassword(String email, String password) {
 		return (User) em.createQuery("select u from User u where u.email=:email and u.password=:password").setParameter("email", email).setParameter("password", password).getSingleResult();
+	}
+
+	@Override
+	public void update(User user) {
+		Query query = em.createQuery("update User u set u.firstName=:firstName, u.lastName=:lastName, u.username=:username, u.password=:password, u.email=:email, u.role=:role where u.id=:id");
+		query.setParameter("firstName",user.getFirstName());
+		query.setParameter("lastName", user.getLastName());
+		query.setParameter("username", user.getUsername());
+		query.setParameter("password", user.getPassword());
+		query.setParameter("email", user.getEmail());
+		query.setParameter("role", user.getRole());
+		query.setParameter("id", user.getId());
+		query.executeUpdate();		
+	}
+
+	@Override
+	public void delete(User user) {
+		em.createQuery("delete from User u where u.id=:id").setParameter("id", user.getId()).executeUpdate();		
 	}
 
 }
