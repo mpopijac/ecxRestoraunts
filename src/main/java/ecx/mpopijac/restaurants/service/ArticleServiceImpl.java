@@ -30,4 +30,14 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleRepository.findById(id);
 	}
 
+	@Transactional
+	public void delete(Article article) {
+		articleRepository.delete(article);
+	}
+
+	@Transactional
+	public void update(Article article) {
+		articleRepository.update(article);
+	}
+
 }

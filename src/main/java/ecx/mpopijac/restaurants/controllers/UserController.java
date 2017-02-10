@@ -56,7 +56,7 @@ public class UserController {
 	
 	//Fetch data and delete/create/update user
 	@RequestMapping(value="/crud-user", method=RequestMethod.POST)
-	public String addCreateUserPage(HttpServletRequest request, Model model){
+	public String addCreateDeleteUserPage(HttpServletRequest request, Model model){
 		String operation = request.getParameter("operation");
 		switch(operation){
 		case "DELETE": {
