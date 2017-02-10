@@ -26,7 +26,7 @@ public class Article {
 	private String	headline;
 	@Column(name="imageLocation")
 	private String imageLocation;
-	@Column(name="description")
+	@Column(name="description", columnDefinition = "TEXT")
 	private String description;
 	@ManyToOne
 	private Restaurant restaurant;

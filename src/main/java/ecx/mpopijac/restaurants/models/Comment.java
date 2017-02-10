@@ -17,7 +17,7 @@ public class Comment {
 	@NotNull
 	@Column(name="id", unique=true)
 	private int id;
-	@Column(name="messageContent")
+	@Column(name="messageContent", columnDefinition = "TEXT")
 	private String messageContent;
 	@Column(name="approved")
 	private boolean approved;

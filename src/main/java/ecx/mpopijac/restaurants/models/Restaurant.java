@@ -20,7 +20,7 @@ public class Restaurant{
 	private String name;
 	@Column(name="address")
 	private String address;
-	@Column(name="description")
+	@Column(name="description", columnDefinition = "TEXT")
 	private String description;
 	
 	public Restaurant(){}
