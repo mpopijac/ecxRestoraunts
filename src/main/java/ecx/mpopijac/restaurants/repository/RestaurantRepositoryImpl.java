@@ -40,4 +40,19 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		return em.createQuery("select r from Restaurant r").getResultList();
 	}
 
+	@Override
+	public void delete(Restaurant restaurant) {
+		em.createQuery("delete from Restaurant r where r.id=:id").setParameter("id", restaurant.getId()).executeUpdate();
+	}
+
+	@Override
+	public void update(Restaurant restaurant) {
+		Query query = em.createQuery("update Restaurant r set r.name=:name, r.address=:address, r.description=:description where r.id=:id");
+		query.setParameter("name",restaurant.getName());
+		query.setParameter("address", restaurant.getAddress());
+		query.setParameter("description", restaurant.getDescription());
+		query.setParameter("id", restaurant.getId());
+		query.executeUpdate();		
+	}
+
 }

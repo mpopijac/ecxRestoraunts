@@ -35,4 +35,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 		return restaurantRepository.findByName(name);
 	}
 
+	@Transactional
+	public void delete(Restaurant restaurant) {
+		restaurantRepository.delete(restaurant);
+	}
+
+	@Transactional
+	public void update(Restaurant restaurant) {
+		restaurantRepository.update(restaurant);
+	}
+
 }

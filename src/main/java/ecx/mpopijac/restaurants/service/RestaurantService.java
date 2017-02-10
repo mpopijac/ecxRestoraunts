@@ -10,5 +10,7 @@ public interface RestaurantService {
 	List<Restaurant> findAll();
 	Restaurant findById(int id);
 	List<Restaurant> findByName(String name);
+	void delete(Restaurant restaurant);
+	void update(Restaurant restaurant);
 
 }

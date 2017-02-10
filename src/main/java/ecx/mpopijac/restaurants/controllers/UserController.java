@@ -1,7 +1,5 @@
 package ecx.mpopijac.restaurants.controllers;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +72,6 @@ public class UserController {
 			user.setUsername(request.getParameter("username"));
 			user.setPassword(request.getParameter("password"));
 			user.setEmail(request.getParameter("email"));
-			user.setId(Integer.parseInt(request.getParameter("id")));
 			user.setRole(roleService.findById(Integer.parseInt(request.getParameter("role"))));
 			userService.save(user);
 			break;
