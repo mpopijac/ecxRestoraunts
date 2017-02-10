@@ -30,75 +30,76 @@ public class ArticleController {
 
 	@Autowired
 	Environment env;
-	
+
 	@Autowired
 	ArticleService articleService;
-	
+
 	@Autowired
 	RestaurantService restaurantService;
-	
+
 	@Autowired
 	UserService userService;
-	
-	@RequestMapping(value="/crud-article", method=RequestMethod.GET)
-	public String crudArticlePage(HttpServletRequest request, Model model){
+
+	@RequestMapping(value = "/crud-article", method = RequestMethod.GET)
+	public String crudArticlePage(HttpServletRequest request, Model model) {
 		String operation = request.getParameter("operation");
-		if(operation!=null && operation.equals("DELETE")){
+		if (operation != null && operation.equals("DELETE")) {
 			Article article = new Article();
 			article.setId(Integer.parseInt(request.getParameter("id")));
-			articleService.delete(article);		
+			articleService.delete(article);
 		}
 		List<Article> articles = articleService.findAll();
-		model.addAttribute("articles",articles);		
+		model.addAttribute("articles", articles);
 		return "crud-article";
 	}
-	
-	@RequestMapping(value="/c-article", method=RequestMethod.GET)
-	public String createArticlePage(Model model){
-		model.addAttribute("heading","Add new article");
-		model.addAttribute("buttonAction","Add new article");
-		model.addAttribute("article",new Article());
-		model.addAttribute("operation","CREATE");
+
+	@RequestMapping(value = "/c-article", method = RequestMethod.GET)
+	public String createArticlePage(Model model) {
+		model.addAttribute("heading", "Add new article");
+		model.addAttribute("buttonAction", "Add new article");
+		model.addAttribute("article", new Article());
+		model.addAttribute("operation", "CREATE");
 		List<Restaurant> restaurants = restaurantService.findAll();
-		model.addAttribute("restaurants",restaurants);
+		model.addAttribute("restaurants", restaurants);
 		return "cu-article";
 	}
-	
-	@RequestMapping(value="/u-article", method=RequestMethod.GET)
-	public String updateArticlePage(HttpServletRequest request, Model model){
-		model.addAttribute("heading","Update article");
-		model.addAttribute("buttonAction","Update article");
+
+	@RequestMapping(value = "/u-article", method = RequestMethod.GET)
+	public String updateArticlePage(HttpServletRequest request, Model model) {
+		model.addAttribute("heading", "Update article");
+		model.addAttribute("buttonAction", "Update article");
 		Article article = articleService.findById(Integer.parseInt(request.getParameter("id")));
-		model.addAttribute("article",article);
-		model.addAttribute("operation","UPDATE");
+		model.addAttribute("article", article);
+		model.addAttribute("operation", "UPDATE");
 		List<Restaurant> restaurants = restaurantService.findAll();
-		model.addAttribute("restaurants",restaurants);
+		model.addAttribute("restaurants", restaurants);
 		return "cu-article";
 	}
-	
-	//Fetch data and create/update article
-	@RequestMapping(value="/crud-article", method=RequestMethod.POST)
-	public String addCreateArticlePage(HttpServletRequest request, Model model, @RequestParam("imageLocation") MultipartFile image){
+
+	// Fetch data and create/update article
+	@RequestMapping(value = "/crud-article", method = RequestMethod.POST)
+	public String addCreateArticlePage(HttpServletRequest request, Model model,
+			@RequestParam("imageLocation") MultipartFile image) {
 		String operation = request.getParameter("operation");
-		switch(operation){
+		switch (operation) {
 		case "CREATE": {
 			Article article = new Article();
 			article.setHeadline(request.getParameter("headline"));
 			article.setDescription(request.getParameter("description"));
-			
+
 			String filename = image.getOriginalFilename();
 			String directory = env.getProperty("upload.file.path");
-			String filePath = Paths.get("."+File.separator + directory, filename).toString();
+			String filePath = Paths.get("." + File.separator + directory, filename).toString();
 			try {
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
 				stream.write(image.getBytes());
 				stream.close();
-				
+
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
 				e.printStackTrace();
 			}
-						
+
 			article.setImageLocation(filePath);
 			article.setAuthor(userService.findById(1));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
@@ -109,24 +110,29 @@ public class ArticleController {
 			Article article = new Article();
 			article.setHeadline(request.getParameter("headline"));
 			article.setDescription(request.getParameter("description"));
-
+			article.setId(Integer.parseInt(request.getParameter("id")));
+			
 			String filename = image.getOriginalFilename();
-			String directory = env.getProperty("upload.file.path");
-			String filePath = Paths.get("."+File.separator + directory, filename).toString();
-			try {
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-				stream.write(image.getBytes());
-				stream.close();
-				
-			} catch (IOException e) {
-				System.err.println(e.getMessage());
-				e.printStackTrace();
+			if (filename != null && !filename.equals("")) {
+				String directory = env.getProperty("upload.file.path");
+				String filePath = Paths.get("." + File.separator + directory, filename).toString();
+				try {
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+					stream.write(image.getBytes());
+					stream.close();
+
+				} catch (IOException e) {
+					System.err.println(e.getMessage());
+					e.printStackTrace();
+				}
+				article.setImageLocation(filePath);
+			}else{
+				article.setImageLocation(articleService.findById(article.getId()).getImageLocation());
 			}
-						
-			article.setImageLocation(filePath);
+			
 			article.setAuthor(userService.findById(1));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
-			article.setId(Integer.parseInt(request.getParameter("id")));
+			
 			articleService.update(article);
 			break;
 		}
