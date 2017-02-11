@@ -9,24 +9,33 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="comments")
+@Table(name = "comments")
 public class Comment {
-	
+
 	@Id
 	@GeneratedValue
 	@NotNull
-	@Column(name="id", unique=true)
+	@Column(name = "id", unique = true)
 	private int id;
-	@Column(name="messageContent", columnDefinition = "TEXT")
+	@Column(name = "messageContent", columnDefinition = "TEXT")
 	private String messageContent;
-	@Column(name="approved")
+	@Column(name = "approved")
 	private boolean approved;
 	@ManyToOne
 	private User author;
 	@ManyToOne
 	private Article article;
-	
-	public Comment(){}
+
+	public Comment() {
+	}
+
+	public Comment(String messageContent, User author, Article article) {
+		super();
+		this.messageContent = messageContent;
+		this.approved = false;
+		this.author = author;
+		this.article = article;
+	}
 
 	public Comment(int id, String messageContent, boolean approved, User author, Article article) {
 		super();
@@ -107,6 +116,5 @@ public class Comment {
 			return false;
 		return true;
 	}
-	
-	
+
 }

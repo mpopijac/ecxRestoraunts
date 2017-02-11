@@ -8,19 +8,20 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
-	
+
 	@Id
 	@GeneratedValue
 	@NotNull
-	@Column(name="id", unique=true)
+	@Column(name = "id", unique = true)
 	private int id;
-	@Column(name="name")
+	@Column(name = "name")
 	private String name;
-	
-	public Role(){}
-	
+
+	public Role() {
+	}
+
 	public Role(int id, String name) {
 		super();
 		this.id = id;
@@ -42,6 +43,5 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

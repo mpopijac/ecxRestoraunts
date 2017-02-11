@@ -14,7 +14,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Transactional
 	public Role save(Role role) {
 		return roleRepository.save(role);

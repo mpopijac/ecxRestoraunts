@@ -68,6 +68,7 @@ public class ArticleController {
 		model.addAttribute("heading", "Update article");
 		model.addAttribute("buttonAction", "Update article");
 		Article article = articleService.findById(Integer.parseInt(request.getParameter("id")));
+		article.setDescription(article.getDescription().replace("<br/>", "\n"));
 		model.addAttribute("article", article);
 		model.addAttribute("operation", "UPDATE");
 		List<Restaurant> restaurants = restaurantService.findAll();
@@ -84,7 +85,9 @@ public class ArticleController {
 		case "CREATE": {
 			Article article = new Article();
 			article.setHeadline(request.getParameter("headline"));
-			article.setDescription(request.getParameter("description"));
+			String description = request.getParameter("description");
+			description = description.replace("\n", "<br/>");
+			article.setDescription(description);
 
 			String filename = image.getOriginalFilename();
 			String directory = env.getProperty("upload.file.path");
@@ -108,9 +111,11 @@ public class ArticleController {
 		case "UPDATE":
 			Article article = new Article();
 			article.setHeadline(request.getParameter("headline"));
-			article.setDescription(request.getParameter("description"));
+			String description = request.getParameter("description");
+			description = description.replace("\n", "<br/>");
+			article.setDescription(description);
 			article.setId(Integer.parseInt(request.getParameter("id")));
-			
+
 			String filename = image.getOriginalFilename();
 			if (filename != null && !filename.equals("")) {
 				String directory = env.getProperty("upload.file.path");
@@ -125,13 +130,13 @@ public class ArticleController {
 					e.printStackTrace();
 				}
 				article.setImageLocation(filePath);
-			}else{
+			} else {
 				article.setImageLocation(articleService.findById(article.getId()).getImageLocation());
 			}
-			
+
 			article.setAuthor(userService.findById(1));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
-			
+
 			articleService.update(article);
 			break;
 		}

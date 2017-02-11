@@ -15,7 +15,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Override
 	public Article save(Article article) {
 		em.persist(article);
@@ -40,14 +40,15 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
 	@Override
 	public void update(Article article) {
-		Query query = em.createQuery("update Article a set a.headline=:headline, a.imageLocation=:imageLocation, a.description=:description, a.restaurant=:restaurant, a.author=:author where a.id=:id");
-		query.setParameter("headline",article.getHeadline());
+		Query query = em.createQuery(
+				"update Article a set a.headline=:headline, a.imageLocation=:imageLocation, a.description=:description, a.restaurant=:restaurant, a.author=:author where a.id=:id");
+		query.setParameter("headline", article.getHeadline());
 		query.setParameter("imageLocation", article.getImageLocation());
 		query.setParameter("description", article.getDescription());
 		query.setParameter("restaurant", article.getRestaurant());
 		query.setParameter("author", article.getAuthor());
 		query.setParameter("id", article.getId());
-		query.executeUpdate();	
+		query.executeUpdate();
 	}
 
 }

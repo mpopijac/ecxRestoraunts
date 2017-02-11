@@ -16,7 +16,7 @@
 						<label for="headline">Headline:</label>
   						<input th:value="${article.headline}" type="text" class="form-control" name="headline" required="required"/>
   						<label for="description">Description:</label>
-  						<input th:value="${article.description}" type="text" class="form-control" name="description" required="required"/>
+  						<textarea th:utext="${article.description}" class="form-control" name="description" required="required"></textarea>
   						<label for="imageLocation">Image:</label>
   						<img th:src="${article.imageLocation}" class="img-rounded" style="max-height: 30%; max-width: 30%; margin-top:10px; margin-bottom:10px;"/>
   						<input th:if="${operation=='CREATE'}" th:file="${article.imageLocation}" type="file" class="form-control" name="imageLocation" required="required"/>

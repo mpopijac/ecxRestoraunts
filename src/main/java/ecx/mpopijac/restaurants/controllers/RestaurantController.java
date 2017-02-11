@@ -18,38 +18,42 @@ public class RestaurantController {
 
 	@Autowired
 	RestaurantService restaurantService;
-	
-	@RequestMapping(value="/crud-restaurant", method=RequestMethod.GET)
-	public String crudRestaurantPage(Model model){
+
+	@RequestMapping(value = "/crud-restaurant", method = RequestMethod.GET)
+	public String crudRestaurantPage(Model model) {
 		List<Restaurant> restaurants = restaurantService.findAll();
-		model.addAttribute("restaurants",restaurants);		
+		for (Restaurant r : restaurants) {
+			r.setDescription(r.getDescription().replace("<br/> ", "\n"));
+		}
+		model.addAttribute("restaurants", restaurants);
 		return "crud-restaurant";
 	}
-	
-	@RequestMapping(value="/c-restaurant", method=RequestMethod.GET)
-	public String createRestaurantPage(Model model){
-		model.addAttribute("heading","Add new restaurant");
-		model.addAttribute("buttonAction","Add new restaurant");
-		model.addAttribute("restaurant",new Restaurant());
-		model.addAttribute("operation","CREATE");
+
+	@RequestMapping(value = "/c-restaurant", method = RequestMethod.GET)
+	public String createRestaurantPage(Model model) {
+		model.addAttribute("heading", "Add new restaurant");
+		model.addAttribute("buttonAction", "Add new restaurant");
+		model.addAttribute("restaurant", new Restaurant());
+		model.addAttribute("operation", "CREATE");
 		return "cu-restaurant";
 	}
-	
-	@RequestMapping(value="/u-restaurant", method=RequestMethod.GET)
-	public String updateRestaurantPage(HttpServletRequest request, Model model){
-		model.addAttribute("heading","Update restaurant");
-		model.addAttribute("buttonAction","Update restaurant");
+
+	@RequestMapping(value = "/u-restaurant", method = RequestMethod.GET)
+	public String updateRestaurantPage(HttpServletRequest request, Model model) {
+		model.addAttribute("heading", "Update restaurant");
+		model.addAttribute("buttonAction", "Update restaurant");
 		Restaurant restaurant = restaurantService.findById(Integer.parseInt(request.getParameter("id")));
-		model.addAttribute("restaurant",restaurant);
-		model.addAttribute("operation","UPDATE");
+		restaurant.setDescription(restaurant.getDescription().replace("<br/> ", "\n"));
+		model.addAttribute("restaurant", restaurant);
+		model.addAttribute("operation", "UPDATE");
 		return "cu-restaurant";
 	}
-	
-	//Fetch data and delete/create/update restaurant
-	@RequestMapping(value="/crud-restaurant", method=RequestMethod.POST)
-	public String addCreateDeleteRestaurantPage(HttpServletRequest request, Model model){
+
+	// Fetch data and delete/create/update restaurant
+	@RequestMapping(value = "/crud-restaurant", method = RequestMethod.POST)
+	public String addCreateDeleteRestaurantPage(HttpServletRequest request, Model model) {
 		String operation = request.getParameter("operation");
-		switch(operation){
+		switch (operation) {
 		case "DELETE": {
 			Restaurant restaurant = new Restaurant();
 			restaurant.setId(Integer.parseInt(request.getParameter("id")));
@@ -60,7 +64,9 @@ public class RestaurantController {
 			Restaurant restaurant = new Restaurant();
 			restaurant.setName(request.getParameter("name"));
 			restaurant.setAddress(request.getParameter("address"));
-			restaurant.setDescription(request.getParameter("description"));
+			String description = request.getParameter("description");
+			description = description.replace("\n", "<br/> ");
+			restaurant.setDescription(description);
 			restaurantService.save(restaurant);
 			break;
 		}
@@ -68,13 +74,15 @@ public class RestaurantController {
 			Restaurant restaurant = new Restaurant();
 			restaurant.setName(request.getParameter("name"));
 			restaurant.setAddress(request.getParameter("address"));
-			restaurant.setDescription(request.getParameter("description"));
+			String description = request.getParameter("description");
+			description = description.replace("\n", "<br/> ");
+			restaurant.setDescription(description);
 			restaurant.setId(Integer.parseInt(request.getParameter("id")));
 			restaurantService.update(restaurant);
 			break;
 		}
 		List<Restaurant> restaurants = restaurantService.findAll();
-		model.addAttribute("restaurants",restaurants);
+		model.addAttribute("restaurants", restaurants);
 		return "crud-restaurant";
 	}
 }

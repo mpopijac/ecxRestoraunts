@@ -3,10 +3,12 @@ package ecx.mpopijac.restaurants.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import ecx.mpopijac.restaurants.models.Article;
 import ecx.mpopijac.restaurants.models.Comment;
 import ecx.mpopijac.restaurants.models.User;
 
@@ -15,12 +17,12 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Override
-	public Comment save(Comment article) {
-		em.persist(article);
+	public Comment save(Comment comment) {
+		em.persist(comment);
 		em.flush();
-		return article;
+		return comment;
 	}
 
 	@Override
@@ -35,7 +37,18 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@Override
 	public List<Comment> findByAuthor(User user) {
-		return em.createQuery("select c from Comment c where c.id = :id").setParameter("id", user.getId()).getResultList();
+		return em.createQuery("select c from Comment c where c.id = :id").setParameter("id", user.getId())
+				.getResultList();
+	}
+
+	@Override
+	public List<Comment> findAllApprovedCommentsByArticle(Article article) {
+		try {
+			return em.createQuery("select c from Comment c where c.approved = :approved and c.article=:article")
+					.setParameter("approved", true).setParameter("article", article).getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }

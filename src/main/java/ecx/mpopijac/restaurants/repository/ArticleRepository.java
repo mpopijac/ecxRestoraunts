@@ -6,8 +6,12 @@ import ecx.mpopijac.restaurants.models.Article;
 
 public interface ArticleRepository {
 	Article save(Article article);
+
 	List<Article> findAll();
+
 	Article findById(int id);
+
 	void delete(Article article);
+
 	void update(Article article);
 }

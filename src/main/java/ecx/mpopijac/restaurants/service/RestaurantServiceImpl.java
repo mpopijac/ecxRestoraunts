@@ -14,7 +14,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
-	
+
 	@Transactional
 	public Restaurant save(Restaurant restaurant) {
 		return restaurantRepository.save(restaurant);

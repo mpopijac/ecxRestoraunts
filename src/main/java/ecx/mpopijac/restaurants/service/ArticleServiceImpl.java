@@ -14,7 +14,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Autowired
 	ArticleRepository articleRepository;
-	
+
 	@Transactional
 	public Article save(Article article) {
 		return articleRepository.save(article);

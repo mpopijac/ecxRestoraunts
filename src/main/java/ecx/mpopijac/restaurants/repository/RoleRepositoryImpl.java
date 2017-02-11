@@ -14,7 +14,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Override
 	public Role save(Role role) {
 		em.persist(role);
@@ -33,12 +33,14 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@Override
 	public Role findByName(String name) {
-		return (Role) em.createQuery("select r from Role r where r.name = :name").setParameter("name", name).getSingleResult();
+		return (Role) em.createQuery("select r from Role r where r.name = :name").setParameter("name", name)
+				.getSingleResult();
 	}
 
 	@Override
 	public void update(Role role) {
-		em.createQuery("update Role r set r.name=:name where r.id=:id").setParameter("name",role.getName()).setParameter("id", role.getId()).executeUpdate();		
+		em.createQuery("update Role r set r.name=:name where r.id=:id").setParameter("name", role.getName())
+				.setParameter("id", role.getId()).executeUpdate();
 	}
 
 	@Override

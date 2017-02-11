@@ -7,16 +7,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.User;
+import ecx.mpopijac.restaurants.repository.RoleRepository;
 import ecx.mpopijac.restaurants.repository.UserRepository;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	RoleRepository roleRepository;
+
 	@Transactional
 	public User save(User user) {
+		if (user.getRole() == null) {
+			user.setRole(roleRepository.findById(2));
+		}
 		return userRepository.save(user);
 	}
 
@@ -57,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	public void delete(User user) {
-		userRepository.delete(user);		
+		userRepository.delete(user);
 	}
 
 }
