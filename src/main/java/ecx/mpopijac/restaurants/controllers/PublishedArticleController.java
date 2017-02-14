@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import ecx.mpopijac.restaurants.models.Comment;
 import ecx.mpopijac.restaurants.models.User;
 import ecx.mpopijac.restaurants.service.ArticleService;
 import ecx.mpopijac.restaurants.service.CommentService;
+import ecx.mpopijac.restaurants.service.MailService;
 import ecx.mpopijac.restaurants.service.UserService;
 
 @Controller
@@ -28,6 +30,9 @@ public class PublishedArticleController {
 
 	@Autowired
 	CommentService commentService;
+	
+	@Autowired
+	MailService mailService;
 
 	@RequestMapping(value = "/published-article", method = RequestMethod.GET)
 	public String publishedArticlePage(HttpServletRequest request, Model model) {
@@ -59,7 +64,11 @@ public class PublishedArticleController {
 		Article article = articleService.findById(articleId);
 		Comment comment = new Comment(commentText, user, article);
 		commentService.save(comment);
-
+		try{
+			mailService.sendEmail(user, comment);
+		}catch (MailException | InterruptedException e) {
+			System.out.println("Nije htjelo poslati poruku"+e.getMessage());
+		}
 		model.addAttribute("article", article);
 		List<Comment> comments = commentService.findAllApprovedCommentsByArticle(article);
 

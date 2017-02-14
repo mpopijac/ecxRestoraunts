@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,6 +81,8 @@ public class ArticleController {
 	@RequestMapping(value = "/crud-article", method = RequestMethod.POST)
 	public String addCreateArticlePage(HttpServletRequest request, Model model,
 			@RequestParam("imageLocation") MultipartFile image) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
 		String operation = request.getParameter("operation");
 		switch (operation) {
 		case "CREATE": {
@@ -103,7 +106,8 @@ public class ArticleController {
 			}
 
 			article.setImageLocation(filePath);
-			article.setAuthor(userService.findById(1));
+
+			article.setAuthor(userService.findByUsername(username));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
 			articleService.save(article);
 			break;
@@ -134,7 +138,7 @@ public class ArticleController {
 				article.setImageLocation(articleService.findById(article.getId()).getImageLocation());
 			}
 
-			article.setAuthor(userService.findById(1));
+			article.setAuthor(userService.findByUsername(username));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
 
 			articleService.update(article);
@@ -142,6 +146,6 @@ public class ArticleController {
 		}
 		List<Article> articles = articleService.findAll();
 		model.addAttribute("articles", articles);
-		return "crud-article";
+		return "redirect:crud-article";
 	}
 }

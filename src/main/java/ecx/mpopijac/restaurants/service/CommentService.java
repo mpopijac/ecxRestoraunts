@@ -4,6 +4,7 @@ import java.util.List;
 
 import ecx.mpopijac.restaurants.models.Article;
 import ecx.mpopijac.restaurants.models.Comment;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.models.User;
 
 public interface CommentService {
@@ -16,4 +17,6 @@ public interface CommentService {
 	Comment findById(int id);
 
 	List<Comment> findByAuthor(User user);
+
+	ServiceStatus approveCommentWithHash(String hash);
 }

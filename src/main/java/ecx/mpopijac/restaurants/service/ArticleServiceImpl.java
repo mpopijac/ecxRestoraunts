@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.User;
 import ecx.mpopijac.restaurants.repository.ArticleRepository;
 
 @Service("articleService")
@@ -38,6 +39,11 @@ public class ArticleServiceImpl implements ArticleService {
 	@Transactional
 	public void update(Article article) {
 		articleRepository.update(article);
+	}
+
+	@Override
+	public List<Article> findByAuthor(User author) {
+		return articleRepository.findByAuthor(author);
 	}
 
 }

@@ -16,4 +16,6 @@ public interface CommentRepository {
 	Comment findById(int id);
 
 	List<Comment> findByAuthor(User user);
+
+	Integer approveCommentWithHash(String hash);
 }

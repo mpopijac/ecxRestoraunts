@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.User;
 
 @Repository("articleRepository")
 public class ArticleRepositoryImpl implements ArticleRepository {
@@ -22,6 +23,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 		em.flush();
 		return article;
 	}
+
 
 	@Override
 	public List<Article> findAll() {
@@ -49,6 +51,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 		query.setParameter("author", article.getAuthor());
 		query.setParameter("id", article.getId());
 		query.executeUpdate();
+	}
+
+	@Override
+	public List<Article> findByAuthor(User author) {
+		return em.createQuery("select a from Article a where a.author=:author").setParameter("author", author).getResultList();
 	}
 
 }

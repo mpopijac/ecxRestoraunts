@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class UserController {
 
 	@Autowired
 	RoleService roleService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@RequestMapping(value = "/crud-user", method = RequestMethod.GET)
 	public String crudUserPage(Model model) {
@@ -62,6 +66,7 @@ public class UserController {
 		case "DELETE": {
 			User user = new User();
 			user.setId(Integer.parseInt(request.getParameter("id")));
+			//Error need to be handled
 			userService.delete(user);
 			break;
 		}
@@ -70,7 +75,7 @@ public class UserController {
 			user.setFirstName(request.getParameter("firstName"));
 			user.setLastName(request.getParameter("lastName"));
 			user.setUsername(request.getParameter("username"));
-			user.setPassword(request.getParameter("password"));
+			user.setPassword(bCryptPasswordEncoder.encode(request.getParameter("password")));
 			user.setEmail(request.getParameter("email"));
 			user.setRole(roleService.findById(Integer.parseInt(request.getParameter("role"))));
 			userService.save(user);
@@ -82,14 +87,19 @@ public class UserController {
 			user.setLastName(request.getParameter("lastName"));
 			user.setUsername(request.getParameter("username"));
 			user.setPassword(request.getParameter("password"));
+			int userId = Integer.parseInt(request.getParameter("id"));
+			User userDB = userService.findById(userId);
+			if(!user.getPassword().equals(userDB.getPassword())){
+				user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			}
 			user.setEmail(request.getParameter("email"));
-			user.setId(Integer.parseInt(request.getParameter("id")));
+			user.setId(userId);
 			user.setRole(roleService.findById(Integer.parseInt(request.getParameter("role"))));
 			userService.update(user);
 			break;
 		}
 		List<User> users = userService.findAll();
 		model.addAttribute("users", users);
-		return "crud-user";
+		return "redirect:crud-user";
 	}
 }

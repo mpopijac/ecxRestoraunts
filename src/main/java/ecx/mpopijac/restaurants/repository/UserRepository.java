@@ -12,6 +12,8 @@ public interface UserRepository {
 	User findById(int id);
 
 	User findByUsername(String username);
+	
+	User findAdminByUsernameOrEmail(String usernameOrEmail);
 
 	User findByEmail(String email);
 
@@ -22,4 +24,6 @@ public interface UserRepository {
 	void update(User user);
 
 	void delete(User user);
+
+	User findByUsernameOrEmail(String usernameOrEmail);
 }

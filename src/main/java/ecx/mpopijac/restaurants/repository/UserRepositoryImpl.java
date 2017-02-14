@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
@@ -67,8 +68,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public void update(User user) {
-		Query query = em.createQuery(
-				"update User u set u.firstName=:firstName, u.lastName=:lastName, u.username=:username, u.password=:password, u.email=:email, u.role=:role where u.id=:id");
+		Query query = em.createQuery("update User u set u.firstName=:firstName, u.lastName=:lastName, u.username=:username, u.password=:password, u.email=:email, u.role=:role where u.id=:id");
 		query.setParameter("firstName", user.getFirstName());
 		query.setParameter("lastName", user.getLastName());
 		query.setParameter("username", user.getUsername());
@@ -81,7 +81,30 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public void delete(User user) {
-		em.createQuery("delete from User u where u.id=:id").setParameter("id", user.getId()).executeUpdate();
+		try{
+			em.createQuery("delete from User u where u.id=:id").setParameter("id", user.getId()).executeUpdate();
+		}catch (IllegalStateException | PersistenceException e) {
+			System.out.println(e.getMessage());
+			System.out.println("Deleting error.");
+		}
+	}
+
+	@Override
+	public User findByUsernameOrEmail(String usernameOrEmail) {
+		try{
+			return (User) em.createQuery("select u from User u where u.username=:usernameOrEmail or u.email=:usernameOrEmail").setParameter("usernameOrEmail", usernameOrEmail).getSingleResult();
+		}catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public User findAdminByUsernameOrEmail(String usernameOrEmail) {
+		try{
+			return (User) em.createQuery("select u from User u where (u.username=:usernameOrEmail or u.email=:usernameOrEmail) and u.role.id=:role").setParameter("usernameOrEmail", usernameOrEmail).setParameter("role", 1).getSingleResult();
+		}catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }

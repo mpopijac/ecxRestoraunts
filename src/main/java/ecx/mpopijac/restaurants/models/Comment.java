@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -21,6 +23,8 @@ public class Comment {
 	private String messageContent;
 	@Column(name = "approved")
 	private boolean approved;
+	@Column(name = "hash")
+	private String hash;
 	@ManyToOne
 	private User author;
 	@ManyToOne
@@ -33,6 +37,8 @@ public class Comment {
 		super();
 		this.messageContent = messageContent;
 		this.approved = false;
+		ShaPasswordEncoder sha = new ShaPasswordEncoder(512);
+		this.hash = sha.encodePassword(messageContent, author);
 		this.author = author;
 		this.article = article;
 	}
@@ -68,6 +74,14 @@ public class Comment {
 
 	public void setApproved(boolean approved) {
 		this.approved = approved;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 
 	public User getAuthor() {

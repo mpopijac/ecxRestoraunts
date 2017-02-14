@@ -3,6 +3,7 @@ package ecx.mpopijac.restaurants.repository;
 import java.util.List;
 
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.User;
 
 public interface ArticleRepository {
 	Article save(Article article);
@@ -14,4 +15,6 @@ public interface ArticleRepository {
 	void delete(Article article);
 
 	void update(Article article);
+
+	List<Article> findByAuthor(User author);
 }

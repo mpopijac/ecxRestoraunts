@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.Comment;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.models.User;
+import ecx.mpopijac.restaurants.repository.ArticleRepository;
+import ecx.mpopijac.restaurants.repository.CommentRepository;
 import ecx.mpopijac.restaurants.repository.RoleRepository;
 import ecx.mpopijac.restaurants.repository.UserRepository;
 
@@ -14,16 +19,23 @@ import ecx.mpopijac.restaurants.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	RoleRepository roleRepository;
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private ArticleRepository articleRepository;
+
+	@Autowired
+	private CommentRepository commentRepository;
 
 	@Transactional
 	public User save(User user) {
 		if (user.getRole() == null) {
 			user.setRole(roleRepository.findById(2));
 		}
+		// user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
@@ -63,8 +75,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public void delete(User user) {
-		userRepository.delete(user);
+	public ServiceStatus delete(User user) {
+		user = userRepository.findById(user.getId());
+		List<Article> articles = articleRepository.findByAuthor(user);
+		List<Comment> comments = commentRepository.findByAuthor(user);
+		if (articles.isEmpty() && comments.isEmpty()) {
+			userRepository.delete(user);
+			return ServiceStatus.SUCCESS;
+		}
+		return ServiceStatus.ERROR;
+
+	}
+
+	@Transactional
+	public User findByUsernameOrEmail(String usernameOrEmail) {
+		return userRepository.findByUsernameOrEmail(usernameOrEmail);
+	}
+
+	@Transactional
+	public User findAdminByUsernameOrEmail(String usernameOrEmail) {
+		return userRepository.findAdminByUsernameOrEmail(usernameOrEmail);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +38,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@Override
 	public List<Comment> findByAuthor(User user) {
-		return em.createQuery("select c from Comment c where c.id = :id").setParameter("id", user.getId())
+		return em.createQuery("select c from Comment c where c.author.id = :id").setParameter("id", user.getId())
 				.getResultList();
 	}
 
@@ -49,6 +50,21 @@ public class CommentRepositoryImpl implements CommentRepository {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public Integer approveCommentWithHash(String hash) {
+		try{
+			Query query = em.createQuery("update Comment c set c.approved=:true where c.hash=:hash and c.approved <> true");
+			query.setParameter("hash", hash);
+			query.setParameter("true", true);
+		
+			return query.executeUpdate();
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			return -1;
+		}
+		
 	}
 
 }

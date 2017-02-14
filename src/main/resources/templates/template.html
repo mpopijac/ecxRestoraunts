@@ -39,8 +39,11 @@
 					<li><a href="/crud-article">CRUD Article</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="/login">Login</a></li>
-					<li><a href="/logout">Logout</a></li>
+					<li sec:authorize="isAnonymous()"><a href="/login">Login</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
+					<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+      					<input  type="hidden" value="Sign Out"/>
+   					</form>
 				</ul>
 			</div>
 		</div>
@@ -57,7 +60,7 @@
 				</div>
 			</div>
 		</footer>
-	</div>
+	</div> 
 </body>
 
 </html>
