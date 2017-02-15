@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="template :: head"></head>
-
+<link rel="stylesheet" type="text/css"  th:href="@{/css/datatables.min.css}"/>
 <body>
 	<nav th:replace="template :: nav"></nav>
 	<div class="container">
 		<h1>List of comments</h1>
-		<table class="table">
+		<table class="table" id="comments">
 			<thead>
 				<tr>
 					<th>Article</th>
@@ -46,5 +46,12 @@
 		</table>
 	</div>
 	<div th:replace="template :: footer"></div>
+	
+	<script type="text/javascript" th:src="@{/js/datatables.min.js}" ></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+	    	$('#comments').DataTable();
+		});
+	</script>
 </body>
 </html>
