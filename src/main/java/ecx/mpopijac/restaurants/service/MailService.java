@@ -25,7 +25,7 @@ public class MailService {
 	Environment env;
 
 	@Async
-	public void sendEmail(User user, Comment comment) throws InterruptedException {
+	public void sendCommentEmail(User user, Comment comment) throws InterruptedException {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -45,8 +45,28 @@ public class MailService {
 		try {
 			javaMailSender.send(preparator);
 		} catch (MailException e) {
-			System.out.println("Ne šalje" + e.getMessage());
+			System.out.println("Mail was not sent: " + e.getMessage());
 		}
 
 	}
+
+	@Async
+	public void sendReplayEmail(String mailMessage, User author) throws InterruptedException {
+
+		MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(author.getEmail()));
+				mimeMessage.setFrom(new InternetAddress(env.getProperty("spring.mail.username")));
+				mimeMessage.setSubject("Reply on your comment");
+				mimeMessage.setText(mailMessage);
+			}
+		};
+
+		try {
+			javaMailSender.send(preparator);
+		} catch (MailException e) {
+			System.out.println("Mail was not sent: " + e.getMessage());
+		}
+	}
+
 }

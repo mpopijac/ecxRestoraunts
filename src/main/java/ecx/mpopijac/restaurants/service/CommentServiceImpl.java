@@ -44,8 +44,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Transactional
-	public ServiceStatus approveCommentWithHash(String hash) {
-		int numberOfChangedRows = commentRepository.approveCommentWithHash(hash);
+	public ServiceStatus approveCommentByHash(String hash) {
+		int numberOfChangedRows = commentRepository.approveCommentByHash(hash);
 		switch(numberOfChangedRows){
 			case 0:
 				return ServiceStatus.ERROR;
@@ -53,6 +53,42 @@ public class CommentServiceImpl implements CommentService {
 				return ServiceStatus.SUCCESS;
 			default:
 				return ServiceStatus.UNKNOWN_ERROR;
+		}
+	}
+
+	@Transactional
+	public ServiceStatus delete(int id) {
+		switch(commentRepository.delete(id)){
+		case 0:
+			return ServiceStatus.ERROR;
+		case 1:
+			return ServiceStatus.SUCCESS;
+		default:
+			return ServiceStatus.UNKNOWN_ERROR;
+		}
+	}
+
+	@Transactional
+	public ServiceStatus unapproveCommentById(int id) {
+		switch(commentRepository.unapproveCommentById(id)){
+		case 0:
+			return ServiceStatus.ERROR;
+		case 1:
+			return ServiceStatus.SUCCESS;
+		default:
+			return ServiceStatus.UNKNOWN_ERROR;
+		}
+	}
+
+	@Transactional
+	public ServiceStatus approveCommentById(int id) {
+		switch(commentRepository.approveCommentById(id)){
+		case 0:
+			return ServiceStatus.ERROR;
+		case 1:
+			return ServiceStatus.SUCCESS;
+		default:
+			return ServiceStatus.UNKNOWN_ERROR;
 		}
 	}
 

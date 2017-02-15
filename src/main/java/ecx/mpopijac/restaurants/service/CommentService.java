@@ -18,5 +18,11 @@ public interface CommentService {
 
 	List<Comment> findByAuthor(User user);
 
-	ServiceStatus approveCommentWithHash(String hash);
+	ServiceStatus approveCommentByHash(String hash);
+
+	ServiceStatus delete(int id);
+
+	ServiceStatus unapproveCommentById(int id);
+
+	ServiceStatus approveCommentById(int id);
 }

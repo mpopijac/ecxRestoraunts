@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
@@ -53,9 +54,9 @@ public class CommentRepositoryImpl implements CommentRepository {
 	}
 
 	@Override
-	public Integer approveCommentWithHash(String hash) {
+	public Integer approveCommentByHash(String hash) {
 		try{
-			Query query = em.createQuery("update Comment c set c.approved=:true where c.hash=:hash and c.approved <> true");
+			Query query = em.createQuery("update Comment c set c.approved=:true where c.hash=:hash and c.approved <> :true");
 			query.setParameter("hash", hash);
 			query.setParameter("true", true);
 		
@@ -65,6 +66,41 @@ public class CommentRepositoryImpl implements CommentRepository {
 			return -1;
 		}
 		
+	}
+
+	@Override
+	public int delete(int id) {
+		try{
+			return em.createQuery("delete from Comment c where c.id=:id").setParameter("id", id).executeUpdate();
+		}catch (IllegalStateException | PersistenceException e) {
+			System.out.println(e.getMessage());
+			System.out.println("Deleting error.");
+		}
+		return -1;
+	}
+
+	@Override
+	public int unapproveCommentById(int id) {
+		try{
+			return em.createQuery("update Comment c set c.approved=:true where c.id=:id and c.approved <> :true").setParameter("true", false).setParameter("id", id).executeUpdate();
+		}catch (IllegalStateException | PersistenceException e) {
+			System.out.println(e.getMessage());
+			System.out.println("Unapproving error.");
+		}
+		return -1;
+	}
+
+	@Override
+	public int approveCommentById(int id) {
+		try{
+			Query query = em.createQuery("update Comment c set c.approved=:true where c.id=:id and c.approved <> :true");
+			query.setParameter("id", id);
+			query.setParameter("true", true);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			return -1;
+		}
 	}
 
 }

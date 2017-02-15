@@ -5,27 +5,34 @@
 <body>
 	<nav th:replace="template :: nav"></nav>
 	<div class="container">
-		<div class="row">
-			<h1>List of roles</h1>
-			<div class="list-group">
-				<a th:each="role: ${roles}" href="" class="list-group-item">
-				<div class="row">
-					<h4 th:text="${role.name}" class="list-group-item-heading" style="float:left; margin-left: 1%;" >Role name</h4>
-					<form method="post" style="float: right; margin-right: 1%;" action="/crud-role">
-						<input th:value="${role.id}" type="hidden" name="id"/>
-						<input type="hidden" name="operation" value="DELETE"/>
-						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-						<button type="submit" class="btn btn-default">Delete</button>
-					</form>
-					<form method="get" action="u-role" style="float: right; margin-right: 1%;">
-						<input th:value="${role.id}" type="hidden" name="id"/>
-						<button type="submit" class="btn btn-default">Update</button>
-					</form>
-				</div>
-				</a>
-			</div>
-			<a href="c-role" type="button" class="btn btn-default">Create</a>
-		</div>
+		<h1>List of roles</h1>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Role</th>
+					<th style="text-align: center;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="role: ${roles}">
+					<td th:text="${role.name}"></td>
+					<td style="margin-left: auto; margin-right:auto; text-align: center;">
+						<form method="get" action="u-role">
+							<input th:value="${role.id}" type="hidden" name="id"/>
+							<button type="submit" class="btn btn-default btn-sm" style="width:80px;">Update</button>
+						</form>
+						<form method="post" action="/crud-role">
+							<input th:value="${role.id}" type="hidden" name="id"/>
+							<input type="hidden" name="operation" value="DELETE"/>
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+							<button type="submit" class="btn btn-danger btn-sm" style="width:80px;">Delete</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+			
+			<a href="c-role" type="button" class="btn btn-success">Create</a>
 	</div>
 
 

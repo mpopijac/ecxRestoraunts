@@ -65,9 +65,9 @@ public class PublishedArticleController {
 		Comment comment = new Comment(commentText, user, article);
 		commentService.save(comment);
 		try{
-			mailService.sendEmail(user, comment);
+			mailService.sendCommentEmail(user, comment);
 		}catch (MailException | InterruptedException e) {
-			System.out.println("Nije htjelo poslati poruku"+e.getMessage());
+			System.out.println("Mail was not sent: "+e.getMessage());
 		}
 		model.addAttribute("article", article);
 		List<Comment> comments = commentService.findAllApprovedCommentsByArticle(article);
@@ -76,4 +76,37 @@ public class PublishedArticleController {
 		return "published-article";
 	}
 
+	
+	
+
+	@RequestMapping(value = "/delete-comment", method = RequestMethod.POST)
+	public String deleteCommentArticlePage(HttpServletRequest request, Model model) {
+		String id = request.getParameter("id");
+		if (id == null || id.equals("")) {
+			return "index";
+		}
+		Comment comment = commentService.findById(Integer.parseInt(id));
+		if(comment==null){
+			return "index";
+		}
+		commentService.delete(comment.getId());
+		
+		model.addAttribute("article", comment.getArticle());
+		model.addAttribute("comments", commentService.findAllApprovedCommentsByArticle(comment.getArticle()));
+		return "published-article";
+	}
+	
+	@RequestMapping(value = "/unapprove-comment", method = RequestMethod.POST)
+	public String unapproveCommentArticlePage(HttpServletRequest request, Model model) {
+		String id = request.getParameter("id");
+		if (id == null || id.equals("")) {
+			return "index";
+		}
+		Comment comment = commentService.findById(Integer.parseInt(id));
+		commentService.unapproveCommentById(comment.getId());
+		
+		model.addAttribute("article", comment.getArticle());
+		model.addAttribute("comments", commentService.findAllApprovedCommentsByArticle(comment.getArticle()));
+		return "published-article";
+	}
 }

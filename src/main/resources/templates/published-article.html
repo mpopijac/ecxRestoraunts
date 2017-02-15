@@ -27,11 +27,24 @@
 						<div class="panel-body">
 							<hr/>
 							<div  th:each="comment: ${comments}" class="container">
-								<div class="row">
+								<div class="row" style="margin-bottom:10px;">
 									<div class="col-sm-1" style="color: #337ab7">
 										Autor:
 									</div>
-									<div th:text="${comment.author.firstName}+' '+${comment.author.lastName}" class="col-sm-11"></div>
+									<div class="col-sm-10">
+										<div th:text="${comment.author.firstName}+' '+${comment.author.lastName}" style="float:left;"></div>
+										<form sec:authorize="isAuthenticated()" method="post" action="/delete-comment" style="float: right">
+											<input type="hidden" name="id" th:value="${comment.id}"/>
+											<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+											<input type="submit" class="btn btn-danger btn-sm" value="Delete"/>
+										</form>
+										<form sec:authorize="isAuthenticated()" method="post" action="/unapprove-comment" style="float: right; margin-right:10px;">
+											<input type="hidden" name="id" th:value="${comment.id}"/>
+											<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+											<input type="submit" class="btn btn-warning btn-sm" value="Unapprove"/>
+										</form>
+									</div>
+									<div class="col-sm-1"></div>
 								</div>
 								<div class="row">
 									<div class="col-sm-1" style="color: #337ab7">

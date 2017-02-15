@@ -33,16 +33,17 @@
 				id="bs-example-navbar-collapse-1">
 				
 				<ul class="nav navbar-nav">
-					<li><a href="/crud-role">CRUD Role</a></li>
-					<li><a href="/crud-user">CRUD User</a></li>
-					<li><a href="/crud-restaurant">CRUD Restaurant</a></li>
-					<li><a href="/crud-article">CRUD Article</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="/crud-role">CRUD Role</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="/crud-user">CRUD User</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="/crud-restaurant">CRUD Restaurant</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="/crud-article">CRUD Article</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="/comments">Comments</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li sec:authorize="isAnonymous()"><a href="/login">Login</a></li>
-					<li sec:authorize="isAuthenticated()"><a href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a></li>
+					<li sec:authorize="isAuthenticated()"><a href="javascript: document.logoutForm.submit()" >Logout</a></li>
 					<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
-      					<input  type="hidden" value="Sign Out"/>
+      					<input  type="hidden" value="Logout"/>
    					</form>
 				</ul>
 			</div>
