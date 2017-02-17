@@ -15,7 +15,7 @@ import ecx.mpopijac.restaurants.service.ArticleService;
 public class IndexController {
 
 	@Autowired
-	ArticleService articleService;
+	private ArticleService articleService;
 
 	@RequestMapping(value = "/*", method = RequestMethod.GET)
 	public String indexPage(Model model) {

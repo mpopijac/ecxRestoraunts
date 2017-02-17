@@ -22,7 +22,7 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@Autowired
-	MailService mailService;
+	private MailService mailService;
 
 	@RequestMapping(value = "/comment-approve", method = RequestMethod.GET)
 	public String approveCommentByEmail(HttpServletRequest request, Model model) {

@@ -79,7 +79,7 @@ public class ArticleController {
 
 	// Fetch data and create/update article
 	@RequestMapping(value = "/crud-article", method = RequestMethod.POST)
-	public String addCreateArticlePage(HttpServletRequest request, Model model,
+	public String addUpdateCreateArticlePage(HttpServletRequest request, Model model,
 			@RequestParam("imageLocation") MultipartFile image) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -146,6 +146,6 @@ public class ArticleController {
 		}
 		List<Article> articles = articleService.findAll();
 		model.addAttribute("articles", articles);
-		return "redirect:crud-article";
+		return "crud-article";
 	}
 }
