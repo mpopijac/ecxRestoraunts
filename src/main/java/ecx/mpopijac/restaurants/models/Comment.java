@@ -42,6 +42,16 @@ public class Comment {
 		this.author = author;
 		this.article = article;
 	}
+	
+	public Comment(String messageContent, boolean approved, User author, Article article) {
+		super();
+		this.messageContent = messageContent;
+		this.approved = approved;
+		this.author = author;
+		this.article = article;
+		ShaPasswordEncoder sha = new ShaPasswordEncoder(512);
+		this.hash = sha.encodePassword(messageContent, author);
+	}
 
 	public Comment(int id, String messageContent, boolean approved, User author, Article article) {
 		super();
@@ -50,6 +60,8 @@ public class Comment {
 		this.approved = approved;
 		this.author = author;
 		this.article = article;
+		ShaPasswordEncoder sha = new ShaPasswordEncoder(512);
+		this.hash = sha.encodePassword(messageContent, author);
 	}
 
 	public int getId() {

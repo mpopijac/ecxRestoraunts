@@ -25,7 +25,14 @@ public class Restaurant {
 
 	public Restaurant() {
 	}
-
+	
+	public Restaurant(String name, String address, String description) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.description = description;
+	}
+	
 	public Restaurant(int id, String name, String address, String description) {
 		super();
 		this.id = id;

@@ -36,6 +36,17 @@ public class Article {
 
 	public Article() {
 	}
+	
+	public Article( String headline, String imageLocation, String description, Restaurant restaurant,
+			User author) {
+		super();
+		this.headline = headline;
+		this.imageLocation = imageLocation;
+		this.description = description;
+		this.restaurant = restaurant;
+		this.author = author;
+		this.comments = comments;
+	}
 
 	public Article(int id, String headline, String imageLocation, String description, Restaurant restaurant,
 			User author, ArrayList<Comment> comments) {
