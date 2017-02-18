@@ -33,7 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Transactional
 	public void delete(Article article) {
-		articleRepository.delete(article);
+		articleRepository.deleteById(article.getId());
 	}
 
 	@Transactional

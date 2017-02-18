@@ -58,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	public ServiceStatus delete(int id) {
-		switch(commentRepository.delete(id)){
+		switch(commentRepository.deleteById(id)){
 		case 0:
 			return ServiceStatus.ERROR;
 		case 1:

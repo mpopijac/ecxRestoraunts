@@ -43,7 +43,6 @@ public class InitialData implements ApplicationRunner{
 	@Override
 	public void run(ApplicationArguments arg0) throws Exception {
 		loadInitialData();
-		
 	}
 	
 	void loadInitialData(){

@@ -1,5 +1,7 @@
 package ecx.mpopijac.restaurants.repository;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,13 +22,22 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public User save(User user) {
-		em.persist(user);
-		return user;
+		try{
+			em.persist(user);
+			em.flush();
+			return user;
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
 	public List<User> findAll() {
-		return em.createQuery("select u from User u").getResultList();
+		try{
+			return em.createQuery("select u from User u").getResultList();
+		}catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -37,9 +48,10 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User findByUsername(String username) {
 		try {
-			return (User) em.createQuery("select u from User u where u.username = :username")
-					.setParameter("username", username).getSingleResult();
-		} catch (NoResultException e) {
+			Query query = em.createQuery("select u from User u where u.username = :username");
+			query.setParameter("username", username);
+			return (User) query.getSingleResult();
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -47,53 +59,73 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User findByEmail(String email) {
 		try {
-			return (User) em.createQuery("select u from User u where u.email=:email").setParameter("email", email)
-					.getSingleResult();
-		} catch (NoResultException e) {
+			Query query = em.createQuery("select u from User u where u.email=:email");
+			query.setParameter("email", email);
+			return (User) query.getSingleResult();
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
 	public User findByUsernameAndPassword(String username, String password) {
-		return (User) em.createQuery("select u from User u where u.username=:username and u.password=:password")
-				.setParameter("username", username).setParameter("password", password).getSingleResult();
+		try{
+			Query query = em.createQuery("select u from User u where u.username=:username and u.password=:password");
+			query.setParameter("username", username);
+			query.setParameter("password", password);
+			return (User) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
 	public User findByEmailAndPassword(String email, String password) {
-		return (User) em.createQuery("select u from User u where u.email=:email and u.password=:password")
-				.setParameter("email", email).setParameter("password", password).getSingleResult();
-	}
-
-	@Override
-	public void update(User user) {
-		Query query = em.createQuery("update User u set u.firstName=:firstName, u.lastName=:lastName, u.username=:username, u.password=:password, u.email=:email, u.role=:role where u.id=:id");
-		query.setParameter("firstName", user.getFirstName());
-		query.setParameter("lastName", user.getLastName());
-		query.setParameter("username", user.getUsername());
-		query.setParameter("password", user.getPassword());
-		query.setParameter("email", user.getEmail());
-		query.setParameter("role", user.getRole());
-		query.setParameter("id", user.getId());
-		query.executeUpdate();
-	}
-
-	@Override
-	public void delete(User user) {
 		try{
-			em.createQuery("delete from User u where u.id=:id").setParameter("id", user.getId()).executeUpdate();
-		}catch (IllegalStateException | PersistenceException e) {
-			System.out.println(e.getMessage());
-			System.out.println("Deleting error.");
+			Query query = em.createQuery("select u from User u where u.email=:email and u.password=:password");
+			query.setParameter("email", email);
+			query.setParameter("password", password);
+			return (User) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public int update(User user) {
+		try{
+			Query query = em.createQuery("update User u set u.firstName=:firstName, u.lastName=:lastName, u.username=:username, u.password=:password, u.email=:email, u.role=:role where u.id=:id");
+			query.setParameter("firstName", user.getFirstName());
+			query.setParameter("lastName", user.getLastName());
+			query.setParameter("username", user.getUsername());
+			query.setParameter("password", user.getPassword());
+			query.setParameter("email", user.getEmail());
+			query.setParameter("role", user.getRole());
+			query.setParameter("id", user.getId());
+			return query.executeUpdate();
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+
+	@Override
+	public int deleteById(int id) {
+		try{
+			Query query = em.createQuery("delete from User u where u.id=:id");
+			query.setParameter("id", id);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			return -1;
 		}
 	}
 
 	@Override
 	public User findByUsernameOrEmail(String usernameOrEmail) {
 		try{
-			return (User) em.createQuery("select u from User u where u.username=:usernameOrEmail or u.email=:usernameOrEmail").setParameter("usernameOrEmail", usernameOrEmail).getSingleResult();
-		}catch (NoResultException e) {
+			Query query = em.createQuery("select u from User u where u.username=:usernameOrEmail or u.email=:usernameOrEmail");
+			query.setParameter("usernameOrEmail", usernameOrEmail);
+			return (User) query.getSingleResult();
+		}catch (Exception e) {
 			return null;
 		}
 	}
@@ -101,8 +133,11 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User findAdminByUsernameOrEmail(String usernameOrEmail) {
 		try{
-			return (User) em.createQuery("select u from User u where (u.username=:usernameOrEmail or u.email=:usernameOrEmail) and u.role.id=:role").setParameter("usernameOrEmail", usernameOrEmail).setParameter("role", 1).getSingleResult();
-		}catch (NoResultException e) {
+			Query query = em.createQuery("select u from User u where (u.username=:usernameOrEmail or u.email=:usernameOrEmail) and u.role.id=:role");
+			query.setParameter("usernameOrEmail", usernameOrEmail);
+			query.setParameter("role", 1);
+			return (User) query.getSingleResult();
+		}catch (Exception e) {
 			return null;
 		}
 	}

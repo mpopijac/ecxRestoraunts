@@ -13,7 +13,7 @@ public interface RoleRepository {
 
 	Role findByName(String name);
 
-	void update(Role role);
+	int update(Role role);
 
-	void delete(Role role);
+	int deleteById(int id);
 }

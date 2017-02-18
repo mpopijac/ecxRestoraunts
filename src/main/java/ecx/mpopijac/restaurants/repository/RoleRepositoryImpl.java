@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +18,22 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@Override
 	public Role save(Role role) {
-		em.persist(role);
-		return role;
+		try {
+			em.persist(role);
+			em.flush();
+			return role;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
 	public List<Role> findAll() {
-		return em.createQuery("select r from Role r").getResultList();
+		try {
+			return em.createQuery("select r from Role r").getResultList();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -33,19 +43,36 @@ public class RoleRepositoryImpl implements RoleRepository {
 
 	@Override
 	public Role findByName(String name) {
-		return (Role) em.createQuery("select r from Role r where r.name = :name").setParameter("name", name)
-				.getSingleResult();
+		try {
+			Query query = em.createQuery("select r from Role r where r.name = :name");
+			query.setParameter("name", name);
+			return (Role) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
-	public void update(Role role) {
-		em.createQuery("update Role r set r.name=:name where r.id=:id").setParameter("name", role.getName())
-				.setParameter("id", role.getId()).executeUpdate();
+	public int update(Role role) {
+		try {
+			Query query = em.createQuery("update Role r set r.name=:name where r.id=:id");
+			query.setParameter("name", role.getName());
+			query.setParameter("id", role.getId());
+			return query.executeUpdate();
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 	@Override
-	public void delete(Role role) {
-		em.createQuery("delete from Role r where r.id=:id").setParameter("id", role.getId()).executeUpdate();
+	public int deleteById(int id) {
+		try {
+			Query query = em.createQuery("delete from Role r where r.id=:id");
+			query.setParameter("id", id);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 }

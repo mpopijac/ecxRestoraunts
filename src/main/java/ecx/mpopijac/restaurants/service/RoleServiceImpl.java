@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Transactional
 	public void delete(Role role) {
-		roleRepository.delete(role);
+		roleRepository.deleteById(role.getId());
 	}
 
 }

@@ -37,7 +37,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Transactional
 	public void delete(Restaurant restaurant) {
-		restaurantRepository.delete(restaurant);
+		restaurantRepository.deleteById(restaurant.getId());
 	}
 
 	@Transactional

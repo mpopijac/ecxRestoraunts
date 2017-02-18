@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 		List<Article> articles = articleRepository.findByAuthor(user);
 		List<Comment> comments = commentRepository.findByAuthor(user);
 		if (articles.isEmpty() && comments.isEmpty()) {
-			userRepository.delete(user);
+			userRepository.deleteById(user.getId());
 			return ServiceStatus.SUCCESS;
 		}
 		return ServiceStatus.ERROR;

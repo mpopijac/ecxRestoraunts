@@ -13,8 +13,8 @@ public interface RestaurantRepository {
 
 	List<Restaurant> findAll();
 
-	void delete(Restaurant restaurant);
+	int deleteById(int id);
 
-	void update(Restaurant restaurant);
+	int update(Restaurant restaurant);
 
 }

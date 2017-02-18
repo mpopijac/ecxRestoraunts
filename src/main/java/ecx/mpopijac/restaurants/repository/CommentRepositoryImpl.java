@@ -22,14 +22,22 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@Override
 	public Comment save(Comment comment) {
-		em.persist(comment);
-		em.flush();
-		return comment;
+		try{
+			em.persist(comment);
+			em.flush();
+			return comment;
+		}catch(Exception e){
+			return null;
+		}
 	}
 
 	@Override
 	public List<Comment> findAll() {
-		return em.createQuery("select c from Comment c").getResultList();
+		try{
+			return em.createQuery("select c from Comment c").getResultList();
+		}catch(Exception e){
+			return null;
+		}
 	}
 
 	@Override
@@ -39,66 +47,70 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	@Override
 	public List<Comment> findByAuthor(User user) {
-		return em.createQuery("select c from Comment c where c.author.id = :id").setParameter("id", user.getId())
-				.getResultList();
-	}
-
-	@Override
-	public List<Comment> findAllApprovedCommentsByArticle(Article article) {
-		try {
-			return em.createQuery("select c from Comment c where c.approved = :approved and c.article=:article")
-					.setParameter("approved", true).setParameter("article", article).getResultList();
-		} catch (NoResultException e) {
+		try{
+			Query query = em.createQuery("select c from Comment c where c.author.id = :id");
+			query.setParameter("id", user.getId());
+			return query.getResultList();
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
-	public Integer approveCommentByHash(String hash) {
-		try{
-			Query query = em.createQuery("update Comment c set c.approved=:true where c.hash=:hash and c.approved <> :true");
-			query.setParameter("hash", hash);
-			query.setParameter("true", true);
-		
-			return query.executeUpdate();
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-			return -1;
+	public List<Comment> findAllApprovedCommentsByArticle(Article article) {
+		try {
+			Query query = em.createQuery("select c from Comment c where c.approved = :approved and c.article=:article");
+			query.setParameter("approved", true);
+			query.setParameter("article", article);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
 		}
-		
 	}
 
 	@Override
-	public int delete(int id) {
-		try{
-			return em.createQuery("delete from Comment c where c.id=:id").setParameter("id", id).executeUpdate();
-		}catch (IllegalStateException | PersistenceException e) {
-			System.out.println(e.getMessage());
-			System.out.println("Deleting error.");
+	public int approveCommentByHash(String hash) {
+		try {
+			Query query = em.createQuery("update Comment c set c.approved=:true where c.hash=:hash and c.approved <> :true");
+			query.setParameter("hash", hash);
+			query.setParameter("true", true);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			return -1;
 		}
-		return -1;
+	}
+
+	@Override
+	public int deleteById(int id) {
+		try {
+			Query query = em.createQuery("delete from Comment c where c.id=:id");
+			query.setParameter("id", id);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 	@Override
 	public int unapproveCommentById(int id) {
-		try{
-			return em.createQuery("update Comment c set c.approved=:true where c.id=:id and c.approved <> :true").setParameter("true", false).setParameter("id", id).executeUpdate();
-		}catch (IllegalStateException | PersistenceException e) {
-			System.out.println(e.getMessage());
-			System.out.println("Unapproving error.");
+		try {
+			Query query = em.createQuery("update Comment c set c.approved=:true where c.id=:id and c.approved <> :true");
+			query.setParameter("true", false);
+			query.setParameter("id", id);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			return -1;
 		}
-		return -1;
 	}
 
 	@Override
 	public int approveCommentById(int id) {
-		try{
+		try {
 			Query query = em.createQuery("update Comment c set c.approved=:true where c.id=:id and c.approved <> :true");
 			query.setParameter("id", id);
 			query.setParameter("true", true);
 			return query.executeUpdate();
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (Exception e) {
 			return -1;
 		}
 	}

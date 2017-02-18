@@ -12,9 +12,9 @@ public interface ArticleRepository {
 
 	Article findById(int id);
 
-	void delete(Article article);
+	int deleteById(int id);
 
-	void update(Article article);
+	int update(Article article);
 
 	List<Article> findByAuthor(User author);
 }
