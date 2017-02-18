@@ -20,7 +20,9 @@ public interface CommentService {
 
 	ServiceStatus approveCommentByHash(String hash);
 
-	ServiceStatus delete(int commentid);
+	ServiceStatus delete(Comment comment);
+	
+	ServiceStatus deleteById(int id);
 
 	ServiceStatus unapproveCommentById(int id);
 

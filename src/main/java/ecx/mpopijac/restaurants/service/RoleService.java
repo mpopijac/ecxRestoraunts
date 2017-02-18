@@ -3,6 +3,7 @@ package ecx.mpopijac.restaurants.service;
 import java.util.List;
 
 import ecx.mpopijac.restaurants.models.Role;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 
 public interface RoleService {
 	Role save(Role role);
@@ -13,7 +14,9 @@ public interface RoleService {
 
 	Role findByName(String name);
 
-	void update(Role role);
+	ServiceStatus update(Role role);
 
-	void delete(Role role);
+	ServiceStatus delete(Role role);
+	
+	ServiceStatus deleteById(int id);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.Role;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.repository.RoleRepository;
 
 @Service("roleService")
@@ -36,13 +37,18 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Transactional
-	public void update(Role role) {
-		roleRepository.update(role);
+	public ServiceStatus update(Role role) {
+		return ServiceStatus.returnStatus(roleRepository.update(role));
 	}
 
 	@Transactional
-	public void delete(Role role) {
-		roleRepository.deleteById(role.getId());
+	public ServiceStatus delete(Role role) {
+		return ServiceStatus.returnStatus(roleRepository.deleteById(role.getId()));
+	}
+	
+	@Transactional
+	public ServiceStatus deleteById(int id) {
+		return ServiceStatus.returnStatus(roleRepository.deleteById(id));
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.models.User;
 import ecx.mpopijac.restaurants.repository.ArticleRepository;
 
@@ -32,18 +33,23 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Transactional
-	public void delete(Article article) {
-		articleRepository.deleteById(article.getId());
+	public ServiceStatus delete(Article article) {
+		return ServiceStatus.returnStatus(articleRepository.deleteById(article.getId()));
 	}
 
 	@Transactional
-	public void update(Article article) {
-		articleRepository.update(article);
+	public ServiceStatus update(Article article) {
+		return ServiceStatus.returnStatus(articleRepository.update(article));
 	}
 
-	@Override
+	@Transactional
 	public List<Article> findByAuthor(User author) {
 		return articleRepository.findByAuthor(author);
+	}
+
+	@Transactional
+	public ServiceStatus deleteById(int id) {
+		return ServiceStatus.returnStatus(articleRepository.deleteById(id));
 	}
 
 }

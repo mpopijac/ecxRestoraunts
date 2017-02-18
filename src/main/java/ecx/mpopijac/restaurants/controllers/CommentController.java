@@ -111,7 +111,7 @@ public class CommentController {
 
 			Comment comment = commentService.findById(Integer.parseInt(commentId));
 			if (comment != null) {
-				commentService.delete(comment.getId());
+				commentService.deleteById(comment.getId());
 			}
 		}
 		model.addAttribute("comments", commentService.findAll());

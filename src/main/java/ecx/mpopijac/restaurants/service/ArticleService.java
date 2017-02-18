@@ -3,6 +3,7 @@ package ecx.mpopijac.restaurants.service;
 import java.util.List;
 
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.models.User;
 
 public interface ArticleService {
@@ -12,9 +13,11 @@ public interface ArticleService {
 
 	Article findById(int id);
 
-	void delete(Article article);
+	ServiceStatus delete(Article article);
+	
+	ServiceStatus deleteById(int id);
 
-	void update(Article article);
+	ServiceStatus update(Article article);
 	
 	List<Article> findByAuthor(User author);
 }

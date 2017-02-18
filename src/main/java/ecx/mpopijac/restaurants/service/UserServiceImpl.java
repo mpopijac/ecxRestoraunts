@@ -10,9 +10,6 @@ import ecx.mpopijac.restaurants.models.Article;
 import ecx.mpopijac.restaurants.models.Comment;
 import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.models.User;
-import ecx.mpopijac.restaurants.repository.ArticleRepository;
-import ecx.mpopijac.restaurants.repository.CommentRepository;
-import ecx.mpopijac.restaurants.repository.RoleRepository;
 import ecx.mpopijac.restaurants.repository.UserRepository;
 
 @Service("userService")
@@ -22,20 +19,19 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private RoleService roleService;
 
 	@Autowired
-	private ArticleRepository articleRepository;
+	private ArticleService articleService;
 
 	@Autowired
-	private CommentRepository commentRepository;
+	private CommentService commentService;
 
 	@Transactional
 	public User save(User user) {
 		if (user.getRole() == null) {
-			user.setRole(roleRepository.findById(2));
+			user.setRole(roleService.findById(2));
 		}
-		// user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
@@ -70,15 +66,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public void update(User user) {
-		userRepository.update(user);
+	public ServiceStatus update(User user) {
+		return ServiceStatus.returnStatus(userRepository.update(user));
 	}
 
 	@Transactional
 	public ServiceStatus delete(User user) {
 		user = userRepository.findById(user.getId());
-		List<Article> articles = articleRepository.findByAuthor(user);
-		List<Comment> comments = commentRepository.findByAuthor(user);
+		List<Article> articles = articleService.findByAuthor(user);
+		List<Comment> comments = commentService.findByAuthor(user);
 		if (articles.isEmpty() && comments.isEmpty()) {
 			userRepository.deleteById(user.getId());
 			return ServiceStatus.SUCCESS;

@@ -89,7 +89,7 @@ public class PublishedArticleController {
 		if(comment==null){
 			return "index";
 		}
-		commentService.delete(comment.getId());
+		commentService.delete(comment);
 		
 		model.addAttribute("article", comment.getArticle());
 		model.addAttribute("comments", commentService.findAllApprovedCommentsByArticle(comment.getArticle()));

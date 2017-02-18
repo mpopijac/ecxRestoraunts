@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ecx.mpopijac.restaurants.models.Restaurant;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 import ecx.mpopijac.restaurants.repository.RestaurantRepository;
 
 @Service("restaurantService")
@@ -36,13 +37,17 @@ public class RestaurantServiceImpl implements RestaurantService {
 	}
 
 	@Transactional
-	public void delete(Restaurant restaurant) {
-		restaurantRepository.deleteById(restaurant.getId());
+	public ServiceStatus delete(Restaurant restaurant) {
+		return ServiceStatus.returnStatus(restaurantRepository.deleteById(restaurant.getId()));
 	}
 
 	@Transactional
-	public void update(Restaurant restaurant) {
-		restaurantRepository.update(restaurant);
+	public ServiceStatus update(Restaurant restaurant) {
+		return ServiceStatus.returnStatus(restaurantRepository.update(restaurant));
 	}
 
+	@Transactional
+	public ServiceStatus deleteById(int id) {
+		return ServiceStatus.returnStatus(restaurantRepository.deleteById(id));
+	}
 }

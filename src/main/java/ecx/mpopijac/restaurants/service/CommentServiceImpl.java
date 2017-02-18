@@ -45,51 +45,27 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	public ServiceStatus approveCommentByHash(String hash) {
-		int numberOfChangedRows = commentRepository.approveCommentByHash(hash);
-		switch(numberOfChangedRows){
-			case 0:
-				return ServiceStatus.ERROR;
-			case 1:
-				return ServiceStatus.SUCCESS;
-			default:
-				return ServiceStatus.UNKNOWN_ERROR;
-		}
+		return ServiceStatus.returnStatus(commentRepository.approveCommentByHash(hash));
 	}
 
 	@Transactional
-	public ServiceStatus delete(int id) {
-		switch(commentRepository.deleteById(id)){
-		case 0:
-			return ServiceStatus.ERROR;
-		case 1:
-			return ServiceStatus.SUCCESS;
-		default:
-			return ServiceStatus.UNKNOWN_ERROR;
-		}
+	public ServiceStatus delete(Comment comment) {
+		return ServiceStatus.returnStatus(commentRepository.deleteById(comment.getId()));
 	}
 
 	@Transactional
 	public ServiceStatus unapproveCommentById(int id) {
-		switch(commentRepository.unapproveCommentById(id)){
-		case 0:
-			return ServiceStatus.ERROR;
-		case 1:
-			return ServiceStatus.SUCCESS;
-		default:
-			return ServiceStatus.UNKNOWN_ERROR;
-		}
+		return ServiceStatus.returnStatus(commentRepository.unapproveCommentById(id));
 	}
 
 	@Transactional
 	public ServiceStatus approveCommentById(int id) {
-		switch(commentRepository.approveCommentById(id)){
-		case 0:
-			return ServiceStatus.ERROR;
-		case 1:
-			return ServiceStatus.SUCCESS;
-		default:
-			return ServiceStatus.UNKNOWN_ERROR;
-		}
+		return ServiceStatus.returnStatus(commentRepository.approveCommentById(id));
+	}
+
+	@Transactional
+	public ServiceStatus deleteById(int id) {
+		return ServiceStatus.returnStatus(commentRepository.deleteById(id));
 	}
 
 }

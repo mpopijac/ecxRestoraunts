@@ -45,7 +45,6 @@ public class Article {
 		this.description = description;
 		this.restaurant = restaurant;
 		this.author = author;
-		this.comments = comments;
 	}
 
 	public Article(int id, String headline, String imageLocation, String description, Restaurant restaurant,

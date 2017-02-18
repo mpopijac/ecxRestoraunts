@@ -24,7 +24,7 @@ public interface UserService {
 
 	User findByEmailAndPassword(String email, String password);
 
-	void update(User user);
+	ServiceStatus update(User user);
 
 	ServiceStatus delete(User user);
 }

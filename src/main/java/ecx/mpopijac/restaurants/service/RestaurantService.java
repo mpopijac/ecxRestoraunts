@@ -3,6 +3,7 @@ package ecx.mpopijac.restaurants.service;
 import java.util.List;
 
 import ecx.mpopijac.restaurants.models.Restaurant;
+import ecx.mpopijac.restaurants.models.ServiceStatus;
 
 public interface RestaurantService {
 
@@ -14,8 +15,10 @@ public interface RestaurantService {
 
 	List<Restaurant> findByName(String name);
 
-	void delete(Restaurant restaurant);
+	ServiceStatus delete(Restaurant restaurant);
+	
+	ServiceStatus deleteById(int id);
 
-	void update(Restaurant restaurant);
+	ServiceStatus update(Restaurant restaurant);
 
 }
