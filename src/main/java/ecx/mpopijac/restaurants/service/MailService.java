@@ -29,15 +29,13 @@ public class MailService {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
-				mimeMessage.setRecipient(Message.RecipientType.TO,
-						new InternetAddress(env.getProperty("spring.mail.username")));
+				mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(env.getProperty("spring.mail.username")));
 				mimeMessage.setFrom(new InternetAddress(user.getEmail()));
 				mimeMessage.setSubject("Comment Service Restaurants");
-				String message = "Comment from: " + user.getFirstName() + " " + user.getLastName() + "<"
-						+ user.getEmail() + ">\n\n";
+				String message = "Comment from: " + user.getFirstName() + " " + user.getLastName() + "<"+ user.getEmail() + ">\n\n";
 				message += "Comment: \n\t" + comment.getMessageContent().replace("<br/>", "\n");
-				message += "\n\nLink for approving comments is: http://localhost:8080/comment-approve?id="
-						+ comment.getHash();
+				message += "\n\nLink for approving comments is: http://localhost:8080/comment-approve?id=";
+				message += comment.getHash();
 				mimeMessage.setText(message);
 			}
 		};
