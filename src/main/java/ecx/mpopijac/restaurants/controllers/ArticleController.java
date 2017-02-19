@@ -1,16 +1,10 @@
 package ecx.mpopijac.restaurants.controllers;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,33 +14,43 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.Operation;
 import ecx.mpopijac.restaurants.models.Restaurant;
 import ecx.mpopijac.restaurants.service.ArticleService;
+import ecx.mpopijac.restaurants.service.FileService;
 import ecx.mpopijac.restaurants.service.RestaurantService;
 import ecx.mpopijac.restaurants.service.UserService;
 
 @Controller
 public class ArticleController {
+	
+	@Autowired
+	private FileService fileService;
 
 	@Autowired
-	Environment env;
+	private ArticleService articleService;
 
 	@Autowired
-	ArticleService articleService;
+	private RestaurantService restaurantService;
 
 	@Autowired
-	RestaurantService restaurantService;
-
-	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@RequestMapping(value = "/crud-article", method = RequestMethod.GET)
 	public String crudArticlePage(HttpServletRequest request, Model model) {
 		String operation = request.getParameter("operation");
-		if (operation != null && operation.equals("DELETE")) {
-			Article article = new Article();
-			article.setId(Integer.parseInt(request.getParameter("id")));
-			articleService.delete(article);
+		if (operation != null){
+			Operation operationEnum = Operation.valueOf(operation);
+			if(operationEnum == Operation.DELETE){
+				try{
+					int id =Integer.parseInt(request.getParameter("id"));
+					articleService.deleteById(id);
+				}catch(NumberFormatException e){
+					System.err.println("String does not contain a parsable integer"+e.getMessage());
+				}catch(Exception e){
+					System.err.println(e.getMessage());
+				}
+			}
 		}
 		List<Article> articles = articleService.findAll();
 		model.addAttribute("articles", articles);
@@ -58,7 +62,7 @@ public class ArticleController {
 		model.addAttribute("heading", "Add new article");
 		model.addAttribute("buttonAction", "Add new article");
 		model.addAttribute("article", new Article());
-		model.addAttribute("operation", "CREATE");
+		model.addAttribute("operation", Operation.CREATE);
 		List<Restaurant> restaurants = restaurantService.findAll();
 		model.addAttribute("restaurants", restaurants);
 		return "cu-article";
@@ -68,10 +72,19 @@ public class ArticleController {
 	public String updateArticlePage(HttpServletRequest request, Model model) {
 		model.addAttribute("heading", "Update article");
 		model.addAttribute("buttonAction", "Update article");
-		Article article = articleService.findById(Integer.parseInt(request.getParameter("id")));
-		article.setDescription(article.getDescription().replace("<br/>", "\n"));
-		model.addAttribute("article", article);
-		model.addAttribute("operation", "UPDATE");
+		Article article;
+		try{
+			int id = Integer.parseInt(request.getParameter("id"));
+			article = articleService.findById(id);
+			model.addAttribute("article",article);
+		}catch(NumberFormatException e){
+			System.err.println("String does not contain a parsable integer"+e.getMessage());
+			return "redirect:crud-article";
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return "redirect:crud-article";
+		}
+		model.addAttribute("operation", Operation.UPDATE);
 		List<Restaurant> restaurants = restaurantService.findAll();
 		model.addAttribute("restaurants", restaurants);
 		return "cu-article";
@@ -83,69 +96,34 @@ public class ArticleController {
 			@RequestParam("imageLocation") MultipartFile image) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		String operation = request.getParameter("operation");
+		Operation operation = Operation.valueOf(request.getParameter("operation"));
 		switch (operation) {
-		case "CREATE": {
+		case CREATE: {
 			Article article = new Article();
 			article.setHeadline(request.getParameter("headline"));
-			String description = request.getParameter("description");
-			description = description.replace("\n", "<br/>");
-			article.setDescription(description);
-
-			String filename = image.getOriginalFilename();
-			String directory = env.getProperty("upload.file.path");
-			String filePath = Paths.get("." + File.separator + directory, filename).toString();
-			try {
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-				stream.write(image.getBytes());
-				stream.close();
-
-			} catch (IOException e) {
-				System.err.println(e.getMessage());
-				e.printStackTrace();
-			}
-
-			article.setImageLocation(filePath);
-
+			article.setDescriptionAsHtml(request.getParameter("description"));
+			article.setImageLocation(fileService.saveFile(image));
 			article.setAuthor(userService.findByUsername(username));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
 			articleService.save(article);
 			break;
 		}
-		case "UPDATE":
+		case UPDATE:
 			Article article = new Article();
 			article.setHeadline(request.getParameter("headline"));
-			String description = request.getParameter("description");
-			description = description.replace("\n", "<br/>");
-			article.setDescription(description);
+			article.setDescriptionAsHtml(request.getParameter("description"));
 			article.setId(Integer.parseInt(request.getParameter("id")));
-
 			String filename = image.getOriginalFilename();
 			if (filename != null && !filename.equals("")) {
-				String directory = env.getProperty("upload.file.path");
-				String filePath = Paths.get("." + File.separator + directory, filename).toString();
-				try {
-					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-					stream.write(image.getBytes());
-					stream.close();
-
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-					e.printStackTrace();
-				}
-				article.setImageLocation(filePath);
+				article.setImageLocation(fileService.saveFile(image));
 			} else {
 				article.setImageLocation(articleService.findById(article.getId()).getImageLocation());
 			}
-
 			article.setAuthor(userService.findByUsername(username));
 			article.setRestaurant(restaurantService.findById(Integer.parseInt(request.getParameter("restaurant"))));
-
 			articleService.update(article);
 			break;
 		}
-		List<Article> articles = articleService.findAll();
-		model.addAttribute("articles", articles);
-		return "crud-article";
+		return "redirect:crud-article";
 	}
 }

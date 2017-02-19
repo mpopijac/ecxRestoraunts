@@ -35,6 +35,7 @@ public class Article {
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public Article() {
+		this.description="";
 	}
 	
 	public Article( String headline, String imageLocation, String description, Restaurant restaurant,
@@ -82,13 +83,37 @@ public class Article {
 	public void setImageLocation(String image) {
 		this.imageLocation = image;
 	}
-
+	
+	/**
+	 * Return plan/text description
+	 * @return String
+	 */
 	public String getDescription() {
+		return description.replace("<br/>", "\n");
+	}
+	
+	/**
+	 * Return decription with html tags
+	 * @return String
+	 */
+	public String getDescriptionAsHtml() {
 		return description;
 	}
-
+	
+	/**
+	 * Set description as-is
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	/**
+	 * New line will be converted in html tag <br/>
+	 * @param description
+	 */
+	public void setDescriptionAsHtml(String description) {
+		this.description = description.replace("\n", "<br/>");
 	}
 
 	public Restaurant getRestaurant() {

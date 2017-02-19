@@ -150,13 +150,8 @@ public class ArticleControllerTest {
 	@Transactional
 	@WithMockUser("admin")
 	public void updateArticlePage_AdminRoleNoIdParameter() throws Exception {
-		MvcResult result = this.mockMvc.perform(get("/u-article")).andExpect(status().isOk())
-				.andExpect(view().name("crud-article")).andReturn();
-
-		List<Article> articles = (List<Article>) result.getModelAndView().getModel().get("articles");
-		assertNotEquals(null, articles);
-		assertTrue(articles.size() != 0);
-
+		this.mockMvc.perform(get("/u-article")).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:crud-article"));
 	}
 
 	@Test
@@ -200,16 +195,11 @@ public class ArticleControllerTest {
 		InputStream inputStream = new BufferedInputStream(
 				new FileInputStream(new File(absolutePathToUploadImages + "/spring-boot.png")));
 		MockMultipartFile imageLocation = new MockMultipartFile("imageLocation", inputStream);
-		MvcResult result = this.mockMvc
+		this.mockMvc
 				.perform(MockMvcRequestBuilders.fileUpload("/crud-article").file(imageLocation).with(csrf())
 						.param("operation", "CREATE").param("restaurant", "1").param("description", "description")
 						.param("headline", "headline"))
-				.andExpect(status().isOk()).andExpect(view().name("crud-article")).andReturn();
-
-		List<Article> articles = (List<Article>) result.getModelAndView().getModel().get("articles");
-		assertNotEquals(null, articles);
-		assertTrue(articles.size() != 0);
-
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:crud-article"));
 	}
 
 	@Test
@@ -219,15 +209,11 @@ public class ArticleControllerTest {
 		InputStream inputStream = new BufferedInputStream(
 				new FileInputStream(new File(absolutePathToUploadImages + "/spring-boot.png")));
 		MockMultipartFile imageLocation = new MockMultipartFile("imageLocation", inputStream);
-		MvcResult result = this.mockMvc
+		this.mockMvc
 				.perform(MockMvcRequestBuilders.fileUpload("/crud-article").file(imageLocation).with(csrf())
 						.param("operation", "UPDATE").param("restaurant", "1").param("description", "description")
 						.param("headline", "headline"))
-				.andExpect(status().isOk()).andExpect(view().name("crud-article")).andReturn();
-
-		List<Article> articles = (List<Article>) result.getModelAndView().getModel().get("articles");
-		assertNotEquals(null, articles);
-		assertTrue(articles.size() != 0);
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:crud-article"));
 
 	}
 
@@ -238,16 +224,11 @@ public class ArticleControllerTest {
 		InputStream inputStream = new BufferedInputStream(
 				new FileInputStream(new File(absolutePathToUploadImages + "/spring-boot.png")));
 		MockMultipartFile imageLocation = new MockMultipartFile("imageLocation", inputStream);
-		MvcResult result = this.mockMvc
+		this.mockMvc
 				.perform(MockMvcRequestBuilders.fileUpload("/crud-article").file(imageLocation).with(csrf())
 						.param("operation", "UPDATE").param("restaurant", "1").param("description", "description")
 						.param("headline", "headline").param("id", "1"))
-				.andExpect(status().isOk()).andExpect(view().name("crud-article")).andReturn();
-
-		List<Article> articles = (List<Article>) result.getModelAndView().getModel().get("articles");
-		assertNotEquals(null, articles);
-		assertTrue(articles.size() != 0);
-
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:crud-article"));
 	}
 
 }
