@@ -76,6 +76,7 @@ public class ArticleController {
 		try{
 			int id = Integer.parseInt(request.getParameter("id"));
 			article = articleService.findById(id);
+			article.setDescription(article.getDescriptionAsPlainText());
 			model.addAttribute("article",article);
 		}catch(NumberFormatException e){
 			System.err.println("String does not contain a parsable integer"+e.getMessage());

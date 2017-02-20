@@ -39,7 +39,6 @@ public class CommentController {
 			model.addAttribute("status", "Unknown error has occurred");
 			break;
 		}
-
 		return "comment-approve";
 	}
 
@@ -54,8 +53,7 @@ public class CommentController {
 		String commentId = request.getParameter("id");
 		try{
 			Comment comment = commentService.findById(Integer.parseInt(commentId));
-			String messageContent = "\n\nYour comment on article "+comment.getArticle().getHeadline()+":\n>"+comment.getMessageContent();
-			messageContent = messageContent.replace("<br/>", "\n> ");			
+			String messageContent = "\n\nYour comment on article "+comment.getArticle().getHeadline()+":\n> "+comment.getMessageContent().replace("<br/>", "\n>");	
 			comment.setMessageContent(messageContent);
 			model.addAttribute("comment",comment);
 		}catch (Exception e) {
@@ -99,7 +97,6 @@ public class CommentController {
 		if (commentId != null && !(commentId.equals(""))) {
 			commentService.approveCommentById(Integer.parseInt(commentId));
 		}
-		
 		model.addAttribute("comments", commentService.findAll());
 		return "comments";
 	}
@@ -108,7 +105,6 @@ public class CommentController {
 	public String commentDeleteAction(HttpServletRequest request, Model model) {
 		String commentId = request.getParameter("id");
 		if (commentId != null && !(commentId.equals(""))) {
-
 			Comment comment = commentService.findById(Integer.parseInt(commentId));
 			if (comment != null) {
 				commentService.deleteById(comment.getId());

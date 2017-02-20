@@ -72,11 +72,35 @@ public class Comment {
 		this.id = id;
 	}
 
+	/**
+	 *Return plain/text messageContent
+	 * @return String
+	 */
+	public String getMessageContentAsPlainText() {
+		return messageContent.replace("<br/>", "\n");
+	}
+	
+	/**
+	 * Return messageContent with html tags
+	 * @return String
+	 */
 	public String getMessageContent() {
 		return messageContent;
 	}
 
+	/**
+	 * Set messageContent as-is
+	 * @param messageContent
+	 */
 	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
+	}
+	
+	/**
+	 * New line will be converted in html tag <br/>
+	 * @param messageContent
+	 */
+	public void setMessageContentAsHtml(String messageContent) {
 		this.messageContent = messageContent;
 	}
 

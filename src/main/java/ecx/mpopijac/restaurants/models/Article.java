@@ -88,7 +88,7 @@ public class Article {
 	 * Return plan/text description
 	 * @return String
 	 */
-	public String getDescription() {
+	public String getDescriptionAsPlainText() {
 		return description.replace("<br/>", "\n");
 	}
 	
@@ -96,7 +96,7 @@ public class Article {
 	 * Return decription with html tags
 	 * @return String
 	 */
-	public String getDescriptionAsHtml() {
+	public String getDescription() {
 		return description;
 	}
 	
