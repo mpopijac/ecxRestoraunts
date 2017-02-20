@@ -38,6 +38,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ecx.mpopijac.restaurants.StaticResourceConfiguration;
 import ecx.mpopijac.restaurants.models.Article;
+import ecx.mpopijac.restaurants.models.Operation;
 import ecx.mpopijac.restaurants.models.Restaurant;
 
 @RunWith(SpringRunner.class)
@@ -132,8 +133,8 @@ public class ArticleControllerTest {
 		assertNotEquals(null, restaurants);
 		assertTrue(restaurants.size() != 0);
 
-		String operation = (String) result.getModelAndView().getModel().get("operation");
-		assertEquals("CREATE", operation);
+		Operation operation = (Operation) result.getModelAndView().getModel().get("operation");
+		assertEquals(Operation.CREATE, operation);
 
 		Article article = (Article) result.getModelAndView().getModel().get("article");
 		assertNotNull(article);
@@ -166,8 +167,8 @@ public class ArticleControllerTest {
 		assertNotEquals(null, restaurants);
 		assertTrue(restaurants.size() != 0);
 
-		String operation = (String) result.getModelAndView().getModel().get("operation");
-		assertEquals("UPDATE", operation);
+		Operation operation = (Operation) result.getModelAndView().getModel().get("operation");
+		assertEquals(Operation.UPDATE, operation);
 
 		Article article = (Article) result.getModelAndView().getModel().get("article");
 		assertNotEquals(null, article);
