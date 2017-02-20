@@ -110,7 +110,7 @@ public class PublishedArticleController {
 		return "published-article";
 	}
 
-	public void setUserDataToModel(Model model) {
+	private void setUserDataToModel(Model model) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (!username.equals("anonymousUser")) {
 			User user = userService.findByUsername(username);
