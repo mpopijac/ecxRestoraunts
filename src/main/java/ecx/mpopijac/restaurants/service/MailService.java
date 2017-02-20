@@ -33,7 +33,7 @@ public class MailService {
 				mimeMessage.setFrom(new InternetAddress(user.getEmail()));
 				mimeMessage.setSubject("Comment Service Restaurants");
 				String message = "Comment from: " + user.getFirstName() + " " + user.getLastName() + "<"+ user.getEmail() + ">\n\n";
-				message += "Comment: \n\t" + comment.getMessageContent().replace("<br/>", "\n");
+				message += "Comment: \n\t" + comment.getMessageContentAsPlainText().replace("\n", "\n\t");
 				message += "\n\nLink for approving comments is: http://localhost:8080/comment-approve?id=";
 				message += comment.getHash();
 				mimeMessage.setText(message);

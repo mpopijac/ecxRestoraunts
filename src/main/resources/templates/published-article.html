@@ -71,15 +71,15 @@
 										<div class="col-sm-1"></div>
 										<div class="col-sm-3" style="color: #337ab7;">
 											<label for="firstName">First Name:</label>
-											<input name="firstName" type="text" class="form-control" required="required"/>
+											<input th:value="${firstName}" name="firstName" type="text" class="form-control" required="required"/>
 										</div>
 										<div class="col-sm-3" style="color: #337ab7;">
 											<label for="lastName">Last Name:</label>
-											<input name="lastName" type="text" class="form-control" required="required"/>
+											<input th:value="${lastName}" name="lastName" type="text" class="form-control" required="required"/>
 										</div>
 										<div class="col-sm-4" style="color: #337ab7;">
 											<label for="email">Email:</label>
-											<input name="email" type="text" class="form-control" required="required"/>
+											<input th:value="${email}" name="email" type="text" class="form-control" required="required"/>
 										</div>
 										<div class="col-sm-1"></div>
 									</div>

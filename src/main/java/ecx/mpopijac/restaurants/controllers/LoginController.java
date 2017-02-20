@@ -19,12 +19,5 @@ public class LoginController {
 		model.addAttribute("loginError", true);
 	    return "login";
     }
-	
-	/*
-	@RequestMapping(value = "/logout?logout", method = RequestMethod.GET)
-    public String logout() {
-        return "index";
-    }
-	*/
-	
+
 }

@@ -35,7 +35,7 @@ public class Comment {
 
 	public Comment(String messageContent, User author, Article article) {
 		super();
-		this.messageContent = messageContent;
+		this.setMessageContentAsHtml(messageContent);
 		this.approved = false;
 		ShaPasswordEncoder sha = new ShaPasswordEncoder(512);
 		this.hash = sha.encodePassword(messageContent, author);
@@ -45,7 +45,7 @@ public class Comment {
 	
 	public Comment(String messageContent, boolean approved, User author, Article article) {
 		super();
-		this.messageContent = messageContent;
+		this.setMessageContentAsHtml(messageContent);
 		this.approved = approved;
 		this.author = author;
 		this.article = article;
@@ -56,7 +56,7 @@ public class Comment {
 	public Comment(int id, String messageContent, boolean approved, User author, Article article) {
 		super();
 		this.id = id;
-		this.messageContent = messageContent;
+		this.setMessageContentAsHtml(messageContent);
 		this.approved = approved;
 		this.author = author;
 		this.article = article;
@@ -101,7 +101,7 @@ public class Comment {
 	 * @param messageContent
 	 */
 	public void setMessageContentAsHtml(String messageContent) {
-		this.messageContent = messageContent;
+		this.messageContent = messageContent.replace("\n", "<br/>");
 	}
 
 	public boolean isApproved() {
