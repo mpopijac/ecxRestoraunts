@@ -32,7 +32,7 @@ public class RoleController {
 		model.addAttribute("heading", "Create role");
 		model.addAttribute("buttonAction", "Create");
 		model.addAttribute("role", new Role());
-		model.addAttribute("operation", "CREATE");
+		model.addAttribute("operation", Operation.CREATE);
 		return "cu-role";
 	}
 
@@ -43,7 +43,7 @@ public class RoleController {
 		int roleId = Integer.parseInt(request.getParameter("id"));
 		Role role = roleService.findById(roleId);
 		model.addAttribute("role", role);
-		model.addAttribute("operation", "UPDATE");
+		model.addAttribute("operation", Operation.UPDATE);
 		return "cu-role";
 	}
 
