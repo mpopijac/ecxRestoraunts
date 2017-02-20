@@ -80,7 +80,6 @@ public class UserServiceImpl implements UserService {
 			return ServiceStatus.SUCCESS;
 		}
 		return ServiceStatus.ERROR;
-
 	}
 
 	@Transactional
