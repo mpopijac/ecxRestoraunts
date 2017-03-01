@@ -20,14 +20,14 @@ public class RoleController {
 	@Autowired
 	RoleService roleService;
 
-	@RequestMapping(value = "/crud-role", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/crud-role", method = RequestMethod.GET)
 	public String rolePage(Model model) {
 		List<Role> roles = roleService.findAll();
 		model.addAttribute("roles", roles);
 		return "crud-role";
 	}
 
-	@RequestMapping(value = "/c-role", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/c-role", method = RequestMethod.GET)
 	public String createRolePage(Model model) {
 		model.addAttribute("heading", "Create role");
 		model.addAttribute("buttonAction", "Create");
@@ -36,7 +36,7 @@ public class RoleController {
 		return "cu-role";
 	}
 
-	@RequestMapping(value = "/u-role", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/u-role", method = RequestMethod.GET)
 	public String updateRolePage(HttpServletRequest request, Model model) {
 		model.addAttribute("heading", "Update role");
 		model.addAttribute("buttonAction", "Update");
@@ -48,7 +48,7 @@ public class RoleController {
 	}
 
 	// Fetch data and delete/create/update role
-	@RequestMapping(value = "/crud-role", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/crud-role", method = RequestMethod.POST)
 	public String addCreateRolePage(HttpServletRequest request, Model model) {
 		String name = request.getParameter("name");
 		Operation operation = Operation.valueOf(request.getParameter("operation"));

@@ -27,7 +27,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 				.antMatchers("/","/index","/css/*","/js/*","/upload/*","/published-article","/logout").permitAll()
+				.antMatchers("/admin/crud-role").hasRole("ADMINISTRATOR")
 				.anyRequest().authenticated()
+				.and()
+				.exceptionHandling().accessDeniedPage("/")
 				.and()
 			.formLogin()
 				.loginPage("/login")

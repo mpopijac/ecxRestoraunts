@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-		User user = userService.findAdminByUsernameOrEmail(usernameOrEmail);
+		User user = userService.findByUsernameOrEmail(usernameOrEmail);
 		if(user==null){
 			return new org.springframework.security.core.userdetails.User(" ", " ", new HashSet<>());
 		}
