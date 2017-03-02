@@ -28,11 +28,11 @@
 				id="bs-example-navbar-collapse-1">
 				
 				<ul class="nav navbar-nav">
-					<li sec:authorize="isAuthenticated()"><a href="/admin/crud-role">CRUD Role</a></li>
-					<li sec:authorize="isAuthenticated()"><a href="/admin/crud-user">CRUD User</a></li>
-					<li sec:authorize="isAuthenticated()"><a href="/admin/crud-restaurant">CRUD Restaurant</a></li>
-					<li sec:authorize="isAuthenticated()"><a href="/admin/crud-article">CRUD Article</a></li>
-					<li sec:authorize="isAuthenticated()"><a href="/admin/comments">Comments</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-role">CRUD Role</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-user">CRUD User</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-restaurant">CRUD Restaurant</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-article">CRUD Article</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/comments">Comments</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li sec:authorize="isAnonymous()"><a href="/login">Log In</a></li>
