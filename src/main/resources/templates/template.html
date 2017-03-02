@@ -28,13 +28,16 @@
 				id="bs-example-navbar-collapse-1">
 				
 				<ul class="nav navbar-nav">
-					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-role">CRUD Role</a></li>
-					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-user">CRUD User</a></li>
-					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-restaurant">CRUD Restaurant</a></li>
-					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-article">CRUD Article</a></li>
-					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/comments">Comments</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-role" th:text="#{template.navigation.crud-role}"></a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-user" th:text="#{template.navigation.crud-user}">r</a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-restaurant" th:text="#{template.navigation.crud-restaurant}"></a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/crud-article" th:text="#{template.navigation.crud-article}"></a></li>
+					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/comments" th:text="#{template.navigation.crud-comments}"></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
+					<li> <a th:href="@{''(localeCode=en)}"><img width="25" height="15" src=".\images\en.jpg"/></a> </li>
+					<li> <a th:href="@{''(localeCode=de)}"><img width="25" height="15" src=".\images\de.jpg"/></a> </li>
+					<li> <a th:href="@{''(localeCode=hr)}"><img width="25" height="15" src=".\images\hr.png"/></a> </li>
 					<li sec:authorize="isAnonymous()"><a href="/login">Log In</a></li>
 					<li sec:authorize="isAnonymous()"><a href="/signup">Sign Up</a></li>
 					<li sec:authorize="isAuthenticated()"><a sec:authentication="name">Bob</a></li>
