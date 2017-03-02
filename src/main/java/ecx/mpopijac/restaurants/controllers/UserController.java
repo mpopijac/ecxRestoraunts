@@ -29,14 +29,14 @@ public class UserController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@RequestMapping(value = "/crud-user", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/crud-user", method = RequestMethod.GET)
 	public String crudUserPage(Model model) {
 		List<User> users = userService.findAll();
 		model.addAttribute("users", users);
 		return "crud-user";
 	}
 
-	@RequestMapping(value = "/c-user", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/c-user", method = RequestMethod.GET)
 	public String createUserPage(Model model) {
 		model.addAttribute("heading", "Add new user");
 		model.addAttribute("buttonAction", "Add new user");
@@ -47,7 +47,7 @@ public class UserController {
 		return "cu-user";
 	}
 
-	@RequestMapping(value = "/u-user", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/u-user", method = RequestMethod.GET)
 	public String updateUserPage(HttpServletRequest request, Model model) {
 		model.addAttribute("heading", "Update user");
 		model.addAttribute("buttonAction", "Update user");
@@ -60,7 +60,7 @@ public class UserController {
 	}
 
 	// Fetch data and delete/create/update user
-	@RequestMapping(value = "/crud-user", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/crud-user", method = RequestMethod.POST)
 	public String addCreateDeleteUserPage(HttpServletRequest request, Model model) {
 		Operation operation = Operation.valueOf(request.getParameter("operation"));
 		switch (operation) {

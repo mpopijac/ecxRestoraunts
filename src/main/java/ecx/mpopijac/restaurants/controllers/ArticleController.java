@@ -36,7 +36,7 @@ public class ArticleController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/crud-article", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/crud-article", method = RequestMethod.GET)
 	public String crudArticlePage(HttpServletRequest request, Model model) {
 		String operation = request.getParameter("operation");
 		if (operation != null){
@@ -57,7 +57,7 @@ public class ArticleController {
 		return "crud-article";
 	}
 
-	@RequestMapping(value = "/c-article", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/c-article", method = RequestMethod.GET)
 	public String createArticlePage(Model model) {
 		model.addAttribute("heading", "Add new article");
 		model.addAttribute("buttonAction", "Add new article");
@@ -68,7 +68,7 @@ public class ArticleController {
 		return "cu-article";
 	}
 
-	@RequestMapping(value = "/u-article", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/u-article", method = RequestMethod.GET)
 	public String updateArticlePage(HttpServletRequest request, Model model) {
 		model.addAttribute("heading", "Update article");
 		model.addAttribute("buttonAction", "Update article");
@@ -92,7 +92,7 @@ public class ArticleController {
 	}
 
 	// Fetch data and create/update article
-	@RequestMapping(value = "/crud-article", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/crud-article", method = RequestMethod.POST)
 	public String addUpdateCreateArticlePage(HttpServletRequest request, Model model,
 			@RequestParam("imageLocation") MultipartFile image) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();

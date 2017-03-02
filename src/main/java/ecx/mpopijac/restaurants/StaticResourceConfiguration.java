@@ -22,5 +22,6 @@ public class StaticResourceConfiguration extends WebMvcConfigurerAdapter {
         absolutePath +=File.separator;
         registry.addResourceHandler("/upload/**").addResourceLocations(absolutePath);
         registry.addResourceHandler("/admin/upload/**").addResourceLocations(absolutePath);
+        registry.addResourceHandler("/user/upload/**").addResourceLocations(absolutePath);
     }
 }

@@ -26,8 +26,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http)throws Exception{
 		http
 			.authorizeRequests()
-				.antMatchers("/","/index","/css/*","/js/*","/upload/*","/published-article","/logout").permitAll()
-				.antMatchers("/admin/crud-role").hasRole("ADMINISTRATOR")
+				.antMatchers("/","/index","/css/*","/js/*","/upload/*","/admin/upload/*","/published-article","/logout").permitAll()
+				.antMatchers("/admin/upload/*").permitAll()
+				.antMatchers("/user/upload/*").permitAll()
+				.antMatchers("/admin/**").hasAuthority("ADMINISTRATOR")
 				.anyRequest().authenticated()
 				.and()
 				.exceptionHandling().accessDeniedPage("/")

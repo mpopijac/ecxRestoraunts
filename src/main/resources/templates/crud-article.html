@@ -21,11 +21,11 @@
        				<td th:text="${article.author.firstName}+' '+${article.author.lastName}"></td>
        				<td th:text="${article.restaurant.name}"></td>
        				<td style="margin-left: auto; margin-right:auto; text-align: center;">
-     					<form method="get" action="u-article">
+     					<form method="get" action="/admin/u-article">
 							<input th:value="${article.id}" type="hidden" name="id"/>
 							<button type="submit" class="btn btn-default btn-sm" style="width:80px;">Update</button>
 						</form>
-     					<form method="get" action="crud-article">
+     					<form method="get" action="/admin/crud-article">
 							<input th:value="${article.id}" type="hidden" name="id"/>
 							<input type="hidden" name="operation" value="DELETE"/>
 							<button type="submit" class="btn btn-danger btn-sm" style="width:80px;">Delete</button>
@@ -34,7 +34,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<a href="c-article" type="button" class="btn btn-success">Create</a>
+		<a href="/admin/c-article" type="button" class="btn btn-success">Create</a>
 	</div>
 
 	<div th:replace="template :: footer"></div>

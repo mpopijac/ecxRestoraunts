@@ -24,7 +24,7 @@ public class CommentController {
 	@Autowired
 	private MailService mailService;
 
-	@RequestMapping(value = "/comment-approve", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/comment-approve", method = RequestMethod.GET)
 	public String approveCommentByEmail(HttpServletRequest request, Model model) {
 		String hash = request.getParameter("id");
 		ServiceStatus status = commentService.approveCommentByHash(hash);
@@ -42,13 +42,13 @@ public class CommentController {
 		return "comment-approve";
 	}
 
-	@RequestMapping(value = "/comments", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/comments", method = RequestMethod.GET)
 	public String commentsPage(HttpServletRequest request, Model model) {
 		model.addAttribute("comments", commentService.findAll());
 		return "comments";
 	}
 
-	@RequestMapping(value = "/comment-reply", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/comment-reply", method = RequestMethod.GET)
 	public String commentReplayPage(HttpServletRequest request, Model model) {
 		String commentId = request.getParameter("id");
 		try{
@@ -63,7 +63,7 @@ public class CommentController {
 		return "comment-reply";
 	}
 	
-	@RequestMapping(value = "/comment-reply", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/comment-reply", method = RequestMethod.POST)
 	public String sendMailOnComment(HttpServletRequest request, Model model) {
 		String commentId = request.getParameter("id");
 		String mailMessage = request.getParameter("message");
@@ -81,7 +81,7 @@ public class CommentController {
 	
 	
 
-	@RequestMapping(value = "/comment-unapprove", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/comment-unapprove", method = RequestMethod.POST)
 	public String commentUnapproveAction(HttpServletRequest request, Model model) {
 		String commentId = request.getParameter("id");
 		if (commentId != null && !(commentId.equals(""))) {
@@ -91,7 +91,7 @@ public class CommentController {
 		return "comments";
 	}
 
-	@RequestMapping(value = "/comment-approve", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/comment-approve", method = RequestMethod.POST)
 	public String commentApproveAction(HttpServletRequest request, Model model) {
 		String commentId = request.getParameter("id");
 		if (commentId != null && !(commentId.equals(""))) {
@@ -101,7 +101,7 @@ public class CommentController {
 		return "comments";
 	}
 
-	@RequestMapping(value = "/comment-delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/comment-delete", method = RequestMethod.POST)
 	public String commentDeleteAction(HttpServletRequest request, Model model) {
 		String commentId = request.getParameter("id");
 		if (commentId != null && !(commentId.equals(""))) {

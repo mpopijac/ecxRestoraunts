@@ -20,7 +20,7 @@ public class RestaurantController {
 	@Autowired
 	RestaurantService restaurantService;
 
-	@RequestMapping(value = "/crud-restaurant", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/crud-restaurant", method = RequestMethod.GET)
 	public String crudRestaurantPage(Model model) {
 		List<Restaurant> restaurants = restaurantService.findAll();
 		for (Restaurant r : restaurants) {
@@ -30,7 +30,7 @@ public class RestaurantController {
 		return "crud-restaurant";
 	}
 
-	@RequestMapping(value = "/c-restaurant", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/c-restaurant", method = RequestMethod.GET)
 	public String createRestaurantPage(Model model) {
 		model.addAttribute("heading", "Add new restaurant");
 		model.addAttribute("buttonAction", "Add new restaurant");
@@ -39,7 +39,7 @@ public class RestaurantController {
 		return "cu-restaurant";
 	}
 
-	@RequestMapping(value = "/u-restaurant", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/u-restaurant", method = RequestMethod.GET)
 	public String updateRestaurantPage(HttpServletRequest request, Model model) {
 		model.addAttribute("heading", "Update restaurant");
 		model.addAttribute("buttonAction", "Update restaurant");
@@ -51,7 +51,7 @@ public class RestaurantController {
 	}
 
 	// Fetch data and delete/create/update restaurant
-	@RequestMapping(value = "/crud-restaurant", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/crud-restaurant", method = RequestMethod.POST)
 	public String addCreateDeleteRestaurantPage(HttpServletRequest request, Model model) {
 		Operation operation = Operation.valueOf(request.getParameter("operation"));
 		switch (operation) {
