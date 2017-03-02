@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -20,8 +21,10 @@ public class User {
 
 	@Column(name = "firstName")
 	private String firstName;
+	
 	@Column(name = "lastName")
 	private String lastName;
+	
 	@Column(name = "username")
 	private String username;
 
