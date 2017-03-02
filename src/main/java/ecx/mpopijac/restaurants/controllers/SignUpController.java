@@ -3,11 +3,13 @@ package ecx.mpopijac.restaurants.controllers;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -48,14 +50,31 @@ public class SignUpController {
 
 	@RequestMapping(value = "/signup-user", method = RequestMethod.POST)
 	public String SignUpUser(HttpServletRequest request, Model model) {
-
+		
+		boolean error = false;
+				
+		if(request.getParameter("password").length()<6){
+			model.addAttribute("PassError1", "Passwords must have at least 6 characters!");
+			error = true;
+		}
+		
+		if(!request.getParameter("password").equals(request.getParameter("cpassword"))){
+			model.addAttribute("PassError2", "Passwords don't match!");	
+			error = true;
+		}
+		
+		if(error){
+			model.addAttribute("signUpError", error);
+			return signUpUser(model);			
+		}
+		
 		User user = new User();
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));
 		user.setUsername(request.getParameter("username"));
 		user.setPassword(bCryptPasswordEncoder.encode(request.getParameter("password")));
 		user.setEmail(request.getParameter("email"));
-		user.setRole(roleService.findById(Integer.parseInt(request.getParameter("role"))));
+		user.setRole(roleService.findByName("User"));
 		userService.save(user);
 		
 		return "redirect:login";
