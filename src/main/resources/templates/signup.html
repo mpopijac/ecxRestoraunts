@@ -14,8 +14,7 @@
 				<p th:if="${loginError}" class="error"></p>
     			<form method="post" action="/signup-user" >
 				<div class="row">
-						<input th:value="${user.id}" type="hidden" name="id"/>
-						<input th:value="${operation}" type="hidden" name="operation"/>
+
 						<label for="firstName">First Name:</label>
   						<input type="text" class="form-control" name="firstName" required="required" />
   						<label for="lastName">Last Name:</label>
@@ -23,9 +22,11 @@
   						<label for="username">Username:</label>
   						<input type="text"  class="form-control" name="username" required="required" />
   						<label for="password">Password:</label>
-  						<input type="password"  class="form-control" name="password" placeholder="min 6 characters" />  		
+  						<input type="password"  class="form-control" name="password" placeholder="min 6 characters" /> 
+  						<div class="help-block with-errors" style="color: red;" th:if="${signUpError}" th:text="${PassError1}"></div> 		
   						<label for="cpassword">Confirm password:</label>
   						<input type="password" class="form-control" name="cpassword" placeholder="min 6 characters" />
+  						<div class="help-block with-errors" style="color: red;" th:if="${signUpError}" th:text="${PassError2}"></div> 						
   						<label for="email">E-mail:</label>
   						<input type="text" class="form-control" id="inputEmail" name="email" required="required" data-error="Bruh, that email address is invalid" placeholder="user@mydomain.com"/>
 						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

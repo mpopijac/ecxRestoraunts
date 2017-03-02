@@ -51,6 +51,23 @@ public class SignUpController {
 	@RequestMapping(value = "/signup-user", method = RequestMethod.POST)
 	public String SignUpUser(HttpServletRequest request, Model model) {
 		
+		boolean error = false;
+				
+		if(request.getParameter("password").length()<6){
+			model.addAttribute("PassError1", "Passwords must have at least 6 characters!");
+			error = true;
+		}
+		
+		if(!request.getParameter("password").equals(request.getParameter("cpassword"))){
+			model.addAttribute("PassError2", "Passwords don't match!");	
+			error = true;
+		}
+		
+		if(error){
+			model.addAttribute("signUpError", error);
+			return signUpUser(model);			
+		}
+		
 		User user = new User();
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));
