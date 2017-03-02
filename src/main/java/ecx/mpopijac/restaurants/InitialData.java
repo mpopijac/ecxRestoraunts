@@ -25,7 +25,7 @@ public class InitialData implements ApplicationRunner{
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
+	@Autowired 
 	private RoleService roleService;
 	
 	@Autowired
