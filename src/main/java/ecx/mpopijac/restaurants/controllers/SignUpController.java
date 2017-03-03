@@ -1,15 +1,15 @@
 package ecx.mpopijac.restaurants.controllers;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -21,6 +21,10 @@ import ecx.mpopijac.restaurants.service.UserService;
 
 @Controller
 public class SignUpController {
+	
+	public static final Pattern VALID_EMAIL = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALID_USERNAME = Pattern.compile("^[a-z0-9_.]{5,15}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALID_NAME = Pattern.compile("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð _-]{2,30}$", Pattern.CASE_INSENSITIVE);
 
 	@Autowired
 	UserService userService;
@@ -52,16 +56,47 @@ public class SignUpController {
 	public String SignUpUser(HttpServletRequest request, Model model) {
 		
 		boolean error = false;
+		String firstName = request.getParameter("firstName");
+		String lastName = request.getParameter("lastName");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String cpassword = request.getParameter("cpassword");
+		String email = request.getParameter("email");
 				
-		if(request.getParameter("password").length()<6){
+		Matcher matcher = VALID_NAME.matcher(firstName);
+		if(!matcher.find()){
+			model.addAttribute("FirstNameError", "First name must be more than 1 and less than 30 characters long!");
+			error = true;
+		}	
+		
+		matcher = VALID_NAME.matcher(lastName);
+		if(!matcher.find()){
+			model.addAttribute("LastNameError", "Last name must be more than 1 and less than 30 characters long!");
+			error = true;
+		}
+		
+		matcher = VALID_USERNAME.matcher(username);
+		if(!matcher.find()){
+			model.addAttribute("UsernameError1", "The username can only consist of alphabetical, number, dot and underscore!");
+			model.addAttribute("UsernameError2", "The username must be more than 4 and less than 15 characters long!");
+			error = true;
+		}
+		
+		if(password.length()<6){
 			model.addAttribute("PassError1", "Passwords must have at least 6 characters!");
 			error = true;
 		}
 		
-		if(!request.getParameter("password").equals(request.getParameter("cpassword"))){
+		if(!password.equals(cpassword)){
 			model.addAttribute("PassError2", "Passwords don't match!");	
 			error = true;
 		}
+		
+		matcher = VALID_EMAIL.matcher(email);
+		if(!matcher.find()){
+			model.addAttribute("EmailError", "The input is not a valid email address!");	
+			error = true;
+		}			
 		
 		if(error){
 			model.addAttribute("signUpError", error);
