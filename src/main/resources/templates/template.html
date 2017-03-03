@@ -35,9 +35,9 @@
 					<li sec:authorize="hasAuthority('ADMINISTRATOR')"><a href="/admin/comments" th:text="#{template.navigation.crud-comments}"></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li> <a th:href="@{''(localeCode=en)}"><img width="25" height="15" src=".\images\en.jpg"/></a> </li>
-					<li> <a th:href="@{''(localeCode=de)}"><img width="25" height="15" src=".\images\de.jpg"/></a> </li>
-					<li> <a th:href="@{''(localeCode=hr)}"><img width="25" height="15" src=".\images\hr.png"/></a> </li>
+					<li> <a th:href="@{''(localeCode=en)}"><img width="25" height="15" th:src="@{~/images/en.jpg}"/></a> </li>
+					<li> <a th:href="@{''(localeCode=de)}"><img width="25" height="15" th:src="@{~/images/de.jpg}"/></a> </li>
+					<li> <a th:href="@{''(localeCode=hr)}"><img width="25" height="15" th:src="@{~/images/hr.png}"/></a> </li>
 					<li sec:authorize="isAnonymous()"><a href="/login">Log In</a></li>
 					<li sec:authorize="isAnonymous()"><a href="/signup">Sign Up</a></li>
 					<li sec:authorize="isAuthenticated()"><a sec:authentication="name">Bob</a></li>
