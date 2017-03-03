@@ -1,9 +1,33 @@
 @CHARSET "UTF-8";
 
-body{
+body {
 	padding-top: 70px;
 }
 
-label{
-	padding-top:10px;
+label {
+	padding-top: 10px;
+}
+
+#userForm .bad {
+	border-color: #FF0000;
+}
+
+#userForm .goood {
+	border-color: limegreen;
+}
+
+#userForm .short {
+	color: #FF0000;
+}
+
+#userForm .weak {
+	color: orange;
+}
+
+#userForm .good {
+	color: #2D98F3;
+}
+
+#userForm .strong {
+	color: limegreen;
 }
