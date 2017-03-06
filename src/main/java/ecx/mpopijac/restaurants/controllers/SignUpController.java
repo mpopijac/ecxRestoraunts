@@ -96,7 +96,13 @@ public class SignUpController {
 		if(!matcher.find()){
 			model.addAttribute("EmailError", "The input is not a valid email address!");	
 			error = true;
-		}			
+		}	
+		
+    	User kor = userService.findByUsername(username);
+    	if(kor!=null){
+			model.addAttribute("UsernameError1", "This username is already taken!");
+			error = true;
+		}		
 		
 		if(error){
 			model.addAttribute("signUpError", error);

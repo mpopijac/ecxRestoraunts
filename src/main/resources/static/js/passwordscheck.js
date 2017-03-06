@@ -47,7 +47,7 @@ function searchAjax() {
 			console.log("SUCCESS: ", data);
 			$('#username').addClass('bad')
 			$('#usernameResult').addClass('short')
-			$('#usernameResult').html("The username exists in the database!")
+			$('#usernameResult').html("This username is already taken!")
 		},
 		error : function(e) {
 			console.log("ERROR: ", e);
