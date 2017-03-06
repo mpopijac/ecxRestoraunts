@@ -22,12 +22,41 @@ $(document).ready(function() {
 				$('#usernameResult').addClass('short')
 				return 'The username must be more than 4 and less than 15 characters long!'
 			}
-			$('#username').addClass('goood')
-			$('#usernameResult').addClass('strong')
-			return ''
+			searchAjax()
 		}
 	}
 });
+
+function searchAjax() {
+	
+	var search = {}
+	search["username"] = $("#username").val();
+	
+	$('#username').removeClass()
+	$('#username').addClass('form-control')			
+	$('#usernameResult').removeClass()		
+
+	$.ajax({
+		type : "GET",
+		contentType : "application/json",
+		url : "/getUser",
+		data : search,
+		dataType : 'json',
+		timeout : 100000,
+		success : function(data) {
+			console.log("SUCCESS: ", data);
+			$('#username').addClass('bad')
+			$('#usernameResult').addClass('short')
+			$('#usernameResult').html("The username exists in the database!")
+		},
+		error : function(e) {
+			console.log("ERROR: ", e);
+			$('#username').addClass('goood')
+			$('#usernameResult').addClass('strong')
+			$('#usernameResult').html("")
+		}
+	});
+}
 
 $(document).ready(function() {
 					$('#password').keyup(function() {
